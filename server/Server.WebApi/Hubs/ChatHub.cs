@@ -5,10 +5,10 @@ namespace Server.WebApi.Hubs
     public class ChatHub : Hub
     {
         static List<string> clients = new List<string>();
-        public async Task SendMessage(string message)
-        {
-            await Clients.All.SendAsync("ReceiveMessage", message);
-        }
+        //public async Task SendMessage(string message)
+        //{
+        //    await Clients.All.SendAsync("ReceiveMessage", message);
+        //}
 
         //Hub'a bir client bağlandığında tetiklenir.
         public override async Task OnConnectedAsync()

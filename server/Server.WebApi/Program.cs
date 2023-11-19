@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Server.Application;
 using Server.Domain.Entities;
 using Server.Persistence;
+using Server.WebApi.Business;
 using Server.WebApi.Hubs;
 using System.Text;
 
@@ -24,6 +25,8 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 //--------------
 builder.Services.AddApplicationRegistration();
 builder.Services.AddPersistenceServices();
+//SignalR
+builder.Services.AddTransient<MyBusiness>();
 builder.Services.AddSignalR();
 //---------------
 
