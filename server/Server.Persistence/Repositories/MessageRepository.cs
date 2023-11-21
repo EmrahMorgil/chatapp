@@ -35,8 +35,8 @@ namespace Server.Persistence.Repositories
 
         public async Task<List<Message>> GetAllMessages(GetAllMessagesCommand request)
         {
-            var queryOne = "SELECT * FROM [Message] WHERE room = @takerId";
-            var queryTwo = "SELECT * FROM [Message] WHERE room = @senderId";
+            var queryOne = $"SELECT * FROM [Message] WHERE room = {request.takerId}";
+            var queryTwo = $"SELECT * FROM [Message] WHERE room = {request.senderId}";
 
             using (var connection = _dbContext.CreateConnection())
             {
