@@ -1,4 +1,5 @@
-﻿using Server.Domain.Entities;
+﻿using Server.Application.Features.Commands.Login;
+using Server.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Server.Application.Interfaces.Repository
     public interface IUserRepository
     {
         Task<User> CreateUser(User user);
-        Task<User> LoginUser(User user);
+        Task<LoginCommand> LoginUser(LoginCommand user);
     }
 }

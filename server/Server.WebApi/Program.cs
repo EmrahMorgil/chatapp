@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Server.Application;
 using Server.Domain.Entities;
 using Server.Persistence;
+using Server.Persistence.Extensions;
 using Server.WebApi.Business;
 using Server.WebApi.Hubs;
 using System.Text;
@@ -12,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 var settings = builder.Configuration.GetSection("TokenInfo").Get<Settings>();
 
 //Registiration
+builder.Services.AddApplicationRegistration();
+builder.Services.AddPersistenceServices();
 
 //CORS settings
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
@@ -22,9 +25,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     )
 );
 
-//--------------
-builder.Services.AddApplicationRegistration();
-builder.Services.AddPersistenceServices();
+
 //SignalR
 builder.Services.AddTransient<MyBusiness>();
 builder.Services.AddSignalR();
@@ -43,20 +44,15 @@ builder.Services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = settings.ValidIssuer,
-        ValidAudience = settings.ValidAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Secret)),
+        ValidIssuer = settings.validIssuer,
+        ValidAudience = settings.validAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.secret)),
     };
 });
 //--------------
 
 
 builder.Services.AddControllers();
-
-
-
-
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -83,5 +79,7 @@ app.UseAuthorization();
 app.MapHub<ChatHub>("/chat-hub");
 
 app.MapControllers();
+
+app.MigrateDatabase();
 
 app.Run();

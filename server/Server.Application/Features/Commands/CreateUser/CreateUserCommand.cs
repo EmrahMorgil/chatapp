@@ -2,6 +2,7 @@
 using MediatR;
 using Server.Application.Features.Commands.AddMessage;
 using Server.Application.Interfaces.Repository;
+using Server.Application.Password;
 using Server.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace Server.Application.Features.Commands.CreateUser
                 var user = _mapper.Map<Domain.Entities.User>(request);
                 user.id = Guid.NewGuid();
                 user.createdDate = DateTime.Now;
+                user.password = Encryption.EncryptPassword(request.password);
                 await _userRepository.CreateUser(user);
                 return user;
             }

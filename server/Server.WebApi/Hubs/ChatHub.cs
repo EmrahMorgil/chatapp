@@ -2,8 +2,8 @@
 
 class client
 {
-    public string clientId { get; set; }
-    public string room { get; set; }
+    public string? clientId { get; set; }
+    public string? room { get; set; }
 }
 
 

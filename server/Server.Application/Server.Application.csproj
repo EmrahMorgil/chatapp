@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Queries\GetAllMessages\**" />
+    <EmbeddedResource Remove="Features\Queries\GetAllMessages\**" />
+    <None Remove="Features\Queries\GetAllMessages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Server.Domain\Server.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Dto\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Features\Queries\GetAllMessages\" />
+    <Folder Include="Features\Queries\" />
     <Folder Include="Wrappers\" />
     <Folder Include="Parameters\" />
   </ItemGroup>

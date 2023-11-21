@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.Commands.Login
 {
-    public class LoginCommand : IRequest<User>
+    public class LoginCommand : IRequest<LoginCommand>
     {
         public string? email { get; set; }
         public string? password { get; set; }
 
-        public class LoginCommandHandler : IRequestHandler<LoginCommand, User>
+        public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginCommand>
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
@@ -26,10 +26,9 @@ namespace Server.Application.Features.Commands.Login
                 _mapper = mapper;
             }
 
-            public async Task<User> Handle(LoginCommand request, CancellationToken cancellationToken)
+            public async Task<LoginCommand> Handle(LoginCommand request, CancellationToken cancellationToken)
             {
-                var user = _mapper.Map<Domain.Entities.User>(request);
-                var loginUser = await _userRepository.LoginUser(user);
+                var loginUser = await _userRepository.LoginUser(request);
                 return loginUser;
             }
         }
