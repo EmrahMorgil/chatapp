@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Server.Application.Features.Commands.AddMessage;
+using Server.Application.Features.Commands.CreateUser;
+using Server.Application.Features.Commands.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,14 @@ namespace Server.Application.Mapping
     {
         public GeneralMapping()
         {
-            
+            CreateMap<Domain.Entities.Message, AddMessageCommand>()
+                .ReverseMap();
+
+            CreateMap<Domain.Entities.User, CreateUserCommand>()
+               .ReverseMap();
+
+            CreateMap<Domain.Entities.User, LoginCommand>()
+               .ReverseMap();
         }
     }
 }

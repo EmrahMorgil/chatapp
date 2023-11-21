@@ -13,9 +13,7 @@
   <ItemGroup>
     <Folder Include="Dto\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Features\Commands\" />
-    <Folder Include="Features\Queries\" />
-    <Folder Include="Interfaces\Repository\" />
+    <Folder Include="Features\Queries\GetAllMessages\" />
     <Folder Include="Wrappers\" />
     <Folder Include="Parameters\" />
   </ItemGroup>
