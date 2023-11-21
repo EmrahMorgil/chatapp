@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Application.Interfaces.Repository;
 using Server.Persistence.Context;
+using Server.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace Server.Persistence
             //services.AddDbContext<EFDbContext>(options => options.UseSqlServer(Configuration.ConnectionString));
 
             services.AddSingleton<DapperContext>();
+
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             //services.AddSingleton<Database>();
 
             services.AddLogging(c => c.AddFluentMigratorConsole())
