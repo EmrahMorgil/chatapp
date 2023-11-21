@@ -16,7 +16,7 @@ namespace Server.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Post(CreateUserCommand user)
         {
             return Ok(await _mediator.Send(user));

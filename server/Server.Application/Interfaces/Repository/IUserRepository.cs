@@ -10,7 +10,7 @@ namespace Server.Application.Interfaces.Repository
 {
     public interface IUserRepository
     {
-        Task<User> CreateUser(User user);
-        Task<LoginCommand> LoginUser(LoginCommand user);
+        Task<bool> CreateUser(User user);
+        Task<bool> LoginUser(LoginCommand user);
     }
 }

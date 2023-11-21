@@ -10,7 +10,7 @@ namespace Server.Application.Interfaces.Repository
 {
     public interface IMessageRepository
     {
-        Task<Message> AddMessage(Message message);
+        Task<bool> AddMessage(Message message);
         Task<List<Message>> GetAllMessages(GetAllMessagesCommand request);
     }
 }
