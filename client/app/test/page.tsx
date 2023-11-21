@@ -8,6 +8,14 @@ const Page = () => {
   const [message, setMessage] = useState<string>("");
   const [messages, setMessages] = useState<Array<string>>([]);
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
+  const [room, setRoom] = useState("");
+
+
+  useEffect(() => {
+    if (!connection)
+      fnConnect();
+  }, [])
+
 
   const fnConnect = () => {
 
@@ -16,15 +24,12 @@ const Page = () => {
       .withAutomaticReconnect()
       .build();
 
-    newConnection.on("ReceiveMessage", (receivedMessage) => {
-      setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-    });
-
-    newConnection.on("clients", (clients) => {
-      setActiveUsers(clients);
-    });
-
     setConnection(newConnection);
+
+    newConnection.on("ReceiveMessage", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
 
     const startConnection = async () => {
       try {
@@ -40,17 +45,23 @@ const Page = () => {
 
 
   const sendMessage = () => {
-    if (connection && message !== "") {
-      connection.invoke("SendMessage", message);
+    if (connection && room && message) {
+      connection.invoke("SendMessageToRoom", room, message);
       setMessage('');
     }
-  };
+  }
+
+  const connectRoom = () => {
+    if (connection && room)
+      connection.invoke("JoinRoom", room);
+  }
 
   return (
     <div className="container">
-      <input onChange={(e: any) => setMessage(e.target.value)} />
+      <input value={message} onChange={(e: any) => setMessage(e.target.value)} />
       <button onClick={sendMessage}>Click</button>
-      <button onClick={() => fnConnect()}>connect</button>
+      <input value={room} onChange={(e) => setRoom(e.target.value)} />
+      <button onClick={() => connectRoom()}>connect</button>
       <div>
         <h4>Messages</h4>
         {messages.map((m, index) =>
@@ -63,57 +74,6 @@ const Page = () => {
           <p key={index} style={{ color: "red" }}>{u}</p>
         )}
       </div>
-
-
-      <>
-        {/* Button trigger modal */}
-        <button
-          type="button"
-          className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Launch demo modal
-        </button>
-        {/* Modal */}
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex={-1}
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Modal title
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                />
-              </div>
-              <div className="modal-body">...</div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" className="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-
 
     </div>
   );
