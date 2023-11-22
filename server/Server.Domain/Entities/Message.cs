@@ -9,6 +9,7 @@ namespace Server.Domain.Entities
 {
     public class Message : BaseEntity
     {
+        public string? senderId { get; set; }
         public string? message { get; set; }
         public string? room { get; set; }
     }

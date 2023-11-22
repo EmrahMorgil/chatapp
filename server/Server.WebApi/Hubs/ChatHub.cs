@@ -46,10 +46,10 @@ namespace Server.WebApi.Hubs
             await Clients.Group(roomName).SendAsync("ReceiveMessage", $"{Context.ConnectionId} joined {roomName}");
         }
 
-        public async Task SendMessageToRoom(string roomName, string message)
-        {
-            await Clients.Group(roomName).SendAsync("ReceiveMessage", $"{Context.ConnectionId}: {message}");
-        }
+        //public async Task SendMessageToRoom(string roomName, string message)
+        //{
+        //    await Clients.Group(roomName).SendAsync("ReceiveMessage", $"{Context.ConnectionId}: {message}");
+        //}
 
 
         public override async Task OnDisconnectedAsync(Exception exception)

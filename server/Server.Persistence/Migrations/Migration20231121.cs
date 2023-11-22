@@ -8,6 +8,7 @@ public class AddProductsTable : Migration
     {
         Create.Table("Message")
             .WithColumn("id").AsGuid().PrimaryKey()
+            .WithColumn("senderId").AsGuid().NotNullable()
             .WithColumn("message").AsString(500).NotNullable()
             .WithColumn("room").AsString(50).NotNullable()
             .WithColumn("createdDate").AsDateTime().NotNullable();
