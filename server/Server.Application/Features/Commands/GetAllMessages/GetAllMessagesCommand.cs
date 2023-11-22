@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.Commands.GetAllMessages
 {
-    public class GetAllMessagesCommand: IRequest<BaseResponse<List<Message>>>
+    public class GetAllMessagesCommand: IRequest<BaseResponse<MessagesResponse>>
     {
-        public string? takerId { get; set; }
-        public string? senderId { get; set; }
+        public Guid? takerId { get; set; }
+        public Guid? senderId { get; set; }
 
 
-        public class GetAllMessagesHandler : IRequestHandler<GetAllMessagesCommand, BaseResponse<List<Message>>>
+        public class GetAllMessagesHandler : IRequestHandler<GetAllMessagesCommand, BaseResponse<MessagesResponse>>
         {
             IMessageRepository _messageRepository;
             private readonly IMapper _mapper;
@@ -29,10 +29,10 @@ namespace Server.Application.Features.Commands.GetAllMessages
                 _mapper = mapper;
             }
 
-            public async Task<BaseResponse<List<Message>>> Handle(GetAllMessagesCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<MessagesResponse>> Handle(GetAllMessagesCommand request, CancellationToken cancellationToken)
             {
 
-                var newResponse = new BaseResponse<List<Message>>();
+                var newResponse = new BaseResponse<MessagesResponse>();
                 newResponse.body = await _messageRepository.GetAllMessages(request);
                 if (newResponse.body != null)
                     newResponse.success = true;

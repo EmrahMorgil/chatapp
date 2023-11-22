@@ -7,10 +7,10 @@ public class AddProductsTable : Migration
     public override void Up()
     {
         Create.Table("Message")
-            .WithColumn("id").AsGuid().PrimaryKey()
+            .WithColumn("id").AsInt32().PrimaryKey().Identity()
             .WithColumn("senderId").AsGuid().NotNullable()
             .WithColumn("message").AsString(500).NotNullable()
-            .WithColumn("room").AsString(50).NotNullable()
+            .WithColumn("room").AsGuid().NotNullable()
             .WithColumn("createdDate").AsDateTime().NotNullable();
         Create.Table("User")
             .WithColumn("id").AsGuid().PrimaryKey()

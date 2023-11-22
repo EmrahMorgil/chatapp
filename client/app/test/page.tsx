@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as signalR from "@microsoft/signalr";
-import styles from "./page.module.css";
 import axios from "axios";
 
 export class AddMessageCommand {

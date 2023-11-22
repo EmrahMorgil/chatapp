@@ -1,4 +1,5 @@
 ﻿using Server.Application.Features.Commands.GetAllMessages;
+using Server.Application.Wrappers;
 using Server.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,6 @@ namespace Server.Application.Interfaces.Repository
     public interface IMessageRepository
     {
         Task<bool> AddMessage(Message message);
-        Task<List<Message>> GetAllMessages(GetAllMessagesCommand request);
+        Task<MessagesResponse> GetAllMessages(GetAllMessagesCommand request);
     }
 }

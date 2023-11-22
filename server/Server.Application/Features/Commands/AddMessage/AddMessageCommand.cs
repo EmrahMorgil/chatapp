@@ -31,7 +31,6 @@ namespace Server.Application.Features.Commands.AddMessage
             public async Task<BaseResponse<Message>> Handle(AddMessageCommand request, CancellationToken cancellationToken)
             {
                 var message = _mapper.Map<Domain.Entities.Message>(request);
-                message.id = Guid.NewGuid();
                 message.createdDate = DateTime.Now;
                 var newResponse = new BaseResponse<Message>();
                 newResponse.body = message;
