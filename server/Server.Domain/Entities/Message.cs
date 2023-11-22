@@ -14,7 +14,7 @@ namespace Server.Domain.Entities
         public int id { get; set; }
         public Guid senderId { get; set; }
         public string? message { get; set; }
-        public Guid? room { get; set; }
+        public string? room { get; set; }
         public DateTime createdDate { get; set; }
     }
 }

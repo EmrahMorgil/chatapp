@@ -10,7 +10,7 @@ public class AddProductsTable : Migration
             .WithColumn("id").AsInt32().PrimaryKey().Identity()
             .WithColumn("senderId").AsGuid().NotNullable()
             .WithColumn("message").AsString(500).NotNullable()
-            .WithColumn("room").AsGuid().NotNullable()
+            .WithColumn("room").AsString(500).NotNullable()
             .WithColumn("createdDate").AsDateTime().NotNullable();
         Create.Table("User")
             .WithColumn("id").AsGuid().PrimaryKey()

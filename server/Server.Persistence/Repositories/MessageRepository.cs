@@ -36,7 +36,10 @@ namespace Server.Persistence.Repositories
 
         public async Task<MessagesResponse> GetAllMessages(GetAllMessagesCommand request)
         {
-            var query = $"SELECT * FROM [Message] WHERE room IN ('{request.takerId}', '{request.senderId}')";
+            var resOne = $"{request.senderId}{request.takerId}";
+            var resTwo = $"{request.takerId}{request.senderId}";
+
+            var query = $"SELECT * FROM [Message] WHERE room IN ('{resOne}', '{resTwo}')";
 
             using (var connection = _dbContext.CreateConnection())
             {
@@ -46,11 +49,11 @@ namespace Server.Persistence.Repositories
                 response.messages = messages;
                 if (messages.Count < 1)
                 {
-                    response.room = request.takerId ?? default(Guid);
+                    response.room = resOne;
                 }
                 else
                 {
-                    response.room = (Guid)messages[0].room;
+                    response.room = messages[0].room;
                 }
                 return response;
             }

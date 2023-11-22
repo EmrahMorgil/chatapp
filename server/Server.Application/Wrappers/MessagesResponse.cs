@@ -10,6 +10,6 @@ namespace Server.Application.Wrappers
     public class MessagesResponse
     {
         public List<Message> messages { get; set; }
-        public Guid room { get; set; }
+        public string? room { get; set; }
     }
 }
