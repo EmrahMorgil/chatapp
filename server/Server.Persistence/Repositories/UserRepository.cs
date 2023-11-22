@@ -1,5 +1,7 @@
 ﻿using Azure.Core;
 using Dapper;
+using Server.Application.Features.Commands.GetAllMessages;
+using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
@@ -41,6 +43,17 @@ namespace Server.Persistence.Repositories
                     else
                         return false;
                 }
+            }
+        }
+
+        public async Task<List<User>> GetUsers(GetUsersCommand entity)
+        {
+            var query = $"SELECT * FROM [User] WHERE id <> '{entity.id}'";
+
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var users = await connection.QueryAsync<User>(query);
+                return users.ToList();
             }
         }
 

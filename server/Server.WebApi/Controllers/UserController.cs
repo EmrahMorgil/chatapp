@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Features.Commands.CreateUser;
+using Server.Application.Features.Commands.GetAllMessages;
+using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
 
 namespace Server.WebApi.Controllers
@@ -26,6 +28,12 @@ namespace Server.WebApi.Controllers
         public async Task<IActionResult> Login(LoginCommand user)
         {
             return Ok(await _mediator.Send(user));
+        }
+
+        [HttpPost("GetUsers")]
+        public async Task<IActionResult> Get(GetUsersCommand command)
+        {
+            return Ok(await _mediator.Send(command));
         }
 
     }
