@@ -1,7 +1,9 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using Server.Application.Features.Commands.Login;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
+using Server.Application.Wrappers;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
 using System;
@@ -42,18 +44,21 @@ namespace Server.Persistence.Repositories
             }
         }
 
-        public async Task<bool> LoginUser(LoginCommand user)
+        public async Task<BaseResponse<User>> LoginUser(LoginCommand user)
         {
             var query = "SELECT * FROM [User] WHERE email = @email";
+            var newResponse = new BaseResponse<User>();
 
             using (var connection = _dbContext.CreateConnection())
             {
                 var userControl = await connection.QueryFirstOrDefaultAsync<User>(query, new { email = user.email});
                 if (userControl != null)
                 {
-                   return Encryption.VerifyPassword(user.password, userControl.password);
+                    newResponse.success = Encryption.VerifyPassword(user.password, userControl.password);
+                    if (newResponse.success)
+                        newResponse.body = userControl;
                 }
-                return false;
+                return newResponse;
             }
         }
 

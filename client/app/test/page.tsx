@@ -65,6 +65,7 @@ const Page = () => {
       var x = new AddMessageCommand();
       x.room = room;
       x.message = message;
+      x.senderId = "1";
       let request = await axios.post("https://localhost:5000/api/Message/AddMessage", x);
       setMessage('');
     }

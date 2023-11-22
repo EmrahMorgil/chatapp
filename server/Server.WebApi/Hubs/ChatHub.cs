@@ -12,7 +12,7 @@ namespace Server.WebApi.Hubs
     public class ChatHub : Hub
     {
         //static List<string> clients = new List<string>();
-        static List<client> clients = new List<client>();
+        //static List<client> clients = new List<client>();
         //public async Task SendMessage(string message)
         //{
         //    await Clients.All.SendAsync("ReceiveMessage", message);
@@ -38,12 +38,12 @@ namespace Server.WebApi.Hubs
 
         public async Task JoinRoom(string roomName)
         {
-            var client = new client();
-            client.clientId = Context.ConnectionId;
-            client.room = roomName;
-            clients.Add(client);
+            //var client = new client();
+            //client.clientId = Context.ConnectionId;
+            //client.room = roomName;
+            //clients.Add(client);
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-            await Clients.Group(roomName).SendAsync("ReceiveMessage", $"{Context.ConnectionId} joined {roomName}");
+            //await Clients.Group(roomName).SendAsync("ReceiveMessage", $"{Context.ConnectionId} joined {roomName}");
         }
 
         //public async Task SendMessageToRoom(string roomName, string message)
@@ -52,22 +52,22 @@ namespace Server.WebApi.Hubs
         //}
 
 
-        public override async Task OnDisconnectedAsync(Exception exception)
-        {
-            var connectionId = Context.ConnectionId;
-            var clientToRemove = clients.FirstOrDefault(c => c.clientId == connectionId);
+        //public override async Task OnDisconnectedAsync(Exception exception)
+        //{
+        //    var connectionId = Context.ConnectionId;
+        //    var clientToRemove = clients.FirstOrDefault(c => c.clientId == connectionId);
 
-            if (clientToRemove != null)
-            {
-                var room = clientToRemove.room;
-                clients.Remove(clientToRemove);
-                await Groups.RemoveFromGroupAsync(connectionId, room);
-                await Clients.Group(room).SendAsync("ReceiveMessage", $"{connectionId} left {room}");
+        //    if (clientToRemove != null)
+        //    {
+        //        var room = clientToRemove.room;
+        //        clients.Remove(clientToRemove);
+        //        await Groups.RemoveFromGroupAsync(connectionId, room);
+        //        await Clients.Group(room).SendAsync("ReceiveMessage", $"{connectionId} left {room}");
 
-                clients.Remove(clientToRemove);
-            }
+        //        clients.Remove(clientToRemove);
+        //    }
 
-            await base.OnDisconnectedAsync(exception);
-        }
+        //    await base.OnDisconnectedAsync(exception);
+        //}
     }
 }
