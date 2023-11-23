@@ -9,6 +9,7 @@ using Server.Application.Password;
 using Server.Application.Wrappers;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
+using Server.Persistence.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,10 @@ namespace Server.Persistence.Repositories
                 {
                     newResponse.success = Encryption.VerifyPassword(user.password, userControl.password);
                     if (newResponse.success)
+                    {
                         newResponse.body = userControl;
+                        newResponse.token = JwtService.GenerateToken(user.email);
+                    }
                 }
                 return newResponse;
             }

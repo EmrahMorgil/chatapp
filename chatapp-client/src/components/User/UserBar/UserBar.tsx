@@ -1,16 +1,12 @@
 import React from 'react'
 import { mdlUser } from '../../../Core/Modals/User';
+import { HandleLogout } from '../../helpers/HandleLogout';
 
 const UserBar = () => {
 
   const activeUser = localStorage.getItem("activeUser");
   var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
 
-  const handleLogout = () => {
-    localStorage.removeItem("activeUser");
-    localStorage.removeItem("takerUser");
-    window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`;
-  }
 
   return (
     <div style={{ backgroundColor: "#202C33", height: "70px", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -22,7 +18,7 @@ const UserBar = () => {
           ⚙️
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><button className="dropdown-item btn btn-danger" onClick={handleLogout}>Logout</button></li>
+          <li><button className="dropdown-item btn btn-danger" onClick={HandleLogout}>Logout</button></li>
         </ul>
       </div>
     </div>

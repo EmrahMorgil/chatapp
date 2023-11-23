@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -25,12 +26,14 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("GetMessages")]
+        [Authorize]
         public async Task<IActionResult> Get(GetAllMessagesCommand command)
         {
             return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("AddMessage")]
+        [Authorize]
         public async Task<IActionResult> Post(AddMessageCommand command)
         {
             var request = await _mediator.Send(command);

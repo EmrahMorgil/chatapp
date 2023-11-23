@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Server.Application.Features.Commands.CreateUser;
@@ -31,6 +32,7 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("GetUsers")]
+        [Authorize]
         public async Task<IActionResult> Get(GetUsersCommand command)
         {
             return Ok(await _mediator.Send(command));

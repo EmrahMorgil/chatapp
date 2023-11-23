@@ -22,10 +22,10 @@ const User: React.FC<UserProps> = (props) => {
       var request = new GetUsersDto();
       const activeUser = localStorage.getItem("activeUser");
       var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
-      if (activeUserParse && activeUserParse.id) {
+      var token = localStorage.getItem("token");
+      if (activeUserParse && activeUserParse.id && token) {
         request.id = activeUserParse.id;
-        request.token = "test";
-        const response = await getUsers(request);
+        const response = await getUsers(request, token);
         if (response.success)
           setUsers(response.body);
       }

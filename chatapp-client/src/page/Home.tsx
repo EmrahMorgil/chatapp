@@ -68,9 +68,10 @@ const Home = () => {
     document.getElementById("id" + dynamicId)?.classList.add("activeUser");
 
     var message: GetMessagesDto = { takerId: dynamicId!, senderId: activeUserParse.id };
+    var token = localStorage.getItem("token");
 
-    if (activeUserParse && dynamicId) {
-      let response = await getMessages(message);
+    if (activeUserParse && dynamicId && token) {
+      let response = await getMessages(message, token);
       if (response.success) {
         connection?.invoke("JoinRoom", response.body.room);
         setMessages(response.body.messages);
