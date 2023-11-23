@@ -38,8 +38,6 @@ namespace Server.Persistence.Repositories
         {
             var resOne = $"{request.senderId}{request.takerId}";
             var resTwo = $"{request.takerId}{request.senderId}";
-            string[] array = { resOne, resTwo };
-            Array.Sort(array);
 
             var query = $"SELECT * FROM [Message] WHERE room IN ('{resOne}', '{resTwo}')";
 
@@ -49,7 +47,16 @@ namespace Server.Persistence.Repositories
                 var getMessages = await connection.QueryAsync<Message>(query);
                 var messages = getMessages.ToList();
                 response.messages = messages;
-                response.room = array[0];
+                if (messages.Count < 1)
+                {
+                    string[] array = { resOne, resTwo };
+                    Array.Sort(array);
+                    response.room = array[0];
+                }
+                else
+                {
+                    response.room = messages[0].room;
+                }
                 return response;
             }
         }
