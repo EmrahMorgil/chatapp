@@ -4,6 +4,7 @@ import Users from './Users/Users'
 import { getUsers } from '../../services/userService'
 import { mdlUser } from '../../Core/Modals/User'
 import { GetUsersDto } from '../../Core/Modals/Dto/GetUsersDto'
+import { UserViewDto } from '../../Core/Modals/Dto/UserViewDto'
 
 
 interface UserProps {
@@ -13,7 +14,7 @@ interface UserProps {
 
 const User: React.FC<UserProps> = (props) => {
 
-  const [users, setUsers] = React.useState<mdlUser[]>([]);
+  const [users, setUsers] = React.useState<UserViewDto[]>([]);
 
 
   React.useEffect(() => {

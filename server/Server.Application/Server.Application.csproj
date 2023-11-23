@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Features\Queries\" />
     <Folder Include="Parameters\" />

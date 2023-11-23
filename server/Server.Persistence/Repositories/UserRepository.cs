@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Dapper;
+using Server.Application.Dto;
 using Server.Application.Features.Commands.GetAllMessages;
 using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
@@ -46,13 +47,13 @@ namespace Server.Persistence.Repositories
             }
         }
 
-        public async Task<List<User>> GetUsers(GetUsersCommand entity)
+        public async Task<List<UserViewDto>> GetUsers(GetUsersCommand entity)
         {
-            var query = $"SELECT * FROM [User] WHERE id <> '{entity.id}'";
+            var query = $"SELECT [id],[name],[image] FROM [User] WHERE id <> '{entity.id}'";
 
             using (var connection = _dbContext.CreateConnection())
             {
-                var users = await connection.QueryAsync<User>(query);
+                var users = await connection.QueryAsync<UserViewDto>(query);
                 return users.ToList();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Server.Application.Dto;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Wrappers;
 using Server.Domain.Entities;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.Commands.GetUsers
 {
-    public class GetUsersCommand : IRequest<BaseResponse<List<User>>>
+    public class GetUsersCommand : IRequest<BaseResponse<List<UserViewDto>>>
     {
         public Guid? id { get; set; }
         public string? token { get; set; }
 
 
-        public class GetUsersHandler : IRequestHandler<GetUsersCommand, BaseResponse<List<User>>>
+        public class GetUsersHandler : IRequestHandler<GetUsersCommand, BaseResponse<List<UserViewDto>>>
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
@@ -28,10 +29,10 @@ namespace Server.Application.Features.Commands.GetUsers
                 _mapper = mapper;
             }
 
-            public async Task<BaseResponse<List<User>>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse<List<UserViewDto>>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
             {
 
-                var newResponse = new BaseResponse<List<User>>();
+                var newResponse = new BaseResponse<List<UserViewDto>>();
                 newResponse.body = await _userRepository.GetUsers(request);
                 if (newResponse.body != null)
                     newResponse.success = true;

@@ -1,4 +1,5 @@
-﻿using Server.Application.Features.Commands.GetUsers;
+﻿using Server.Application.Dto;
+using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
 using Server.Application.Wrappers;
 using Server.Domain.Entities;
@@ -14,6 +15,6 @@ namespace Server.Application.Interfaces.Repository
     {
         Task<bool> CreateUser(User user);
         Task<BaseResponse<User>> LoginUser(LoginCommand user);
-        Task<List<User>> GetUsers(GetUsersCommand entity);
+        Task<List<UserViewDto>> GetUsers(GetUsersCommand entity);
     }
 }
