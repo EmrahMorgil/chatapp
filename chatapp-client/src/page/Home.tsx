@@ -6,10 +6,11 @@ import { mdlUser } from "../Core/Modals/User";
 import { getMessages } from "../services/messageService";
 import { GetMessagesDto } from "../Core/Modals/Dto/GetMessagesDto";
 import * as signalR from "@microsoft/signalr";
-import axios from "axios";
 
 
 const Home = () => {
+  const getmessage = "../../sounds/getmessage.wav";
+  const sendtomessage = "../../sounds/sendtomessage.wav";
 
   const [connection, setConnection] = React.useState<signalR.HubConnection | null>(null);
   const [messages, setMessages] = React.useState<mdlMessage[]>([]);
@@ -30,14 +31,20 @@ const Home = () => {
   }, []);
 
   const fnGetConnection = () => {
+    var activeUser = localStorage.getItem("activeUser");
+    var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:5000/chat-hub")
+      .withUrl(`${process.env.REACT_APP_SERVER_URI}/chat-hub`)
       .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
 
-    newConnection.on("ReceiveMessage", (message) => {
+    newConnection.on("ReceiveMessage", (message: mdlMessage) => {
+      if (message.senderId !== activeUserParse.id)
+        new Audio(getmessage).play();
+      else
+        new Audio(sendtomessage).play();
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 

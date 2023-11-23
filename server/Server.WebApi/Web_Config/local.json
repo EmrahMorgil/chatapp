@@ -7,15 +7,13 @@
   },
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=SQL5105.site4now.net;Initial Catalog=db_aa1e60_chatapp;User Id=db_aa1e60_chatapp_admin;Password=emrah123;"
+    "DefaultConnection": "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;"
   },
   "TokenInfo": {
     "Secret": "ExampleSecurityKey",
     "ValidIssuer": "http://morfit.com",
     "ValidAudience": "http://morfit.com",
     "ValidityPeriod": 1
-    // 1 gün geçerli token
+    // 1 g�n ge�erli token
   }
 }
-
-

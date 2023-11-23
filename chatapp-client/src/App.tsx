@@ -6,6 +6,7 @@ import Login from './page/Login';
 import Register from './page/Register';
 import { mdlUser } from './Core/Modals/User';
 import Protected from './components/Protected';
+import Profile from './page/Profile';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Protected loggedIn={activeUser ? true : false}><Home /></Protected>} />
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/profile' element={<Protected loggedIn={activeUser ? true : false}><Profile /></Protected>} />
       </Routes>
     </div>
   );

@@ -25,7 +25,7 @@ namespace Server.Persistence
                 .AddFluentMigratorCore()
                 .ConfigureRunner(c => c
                     .AddSqlServer2012()
-                    .WithGlobalConnectionString(Configuration.ConnectionString)
+                    .WithGlobalConnectionString("Data Source=SQL5105.site4now.net;Initial Catalog=db_aa1e60_chatapp;User Id=db_aa1e60_chatapp_admin;Password=emrah123;")
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations());
         }
     }

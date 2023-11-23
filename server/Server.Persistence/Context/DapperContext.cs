@@ -16,7 +16,7 @@ namespace Server.Persistence.Context
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = "Data Source=SQL5105.site4now.net;Initial Catalog=db_aa1e60_chatapp;User Id=db_aa1e60_chatapp_admin;Password=emrah123;";
         }
         public IDbConnection CreateConnection()
             => new SqlConnection(_connectionString);
