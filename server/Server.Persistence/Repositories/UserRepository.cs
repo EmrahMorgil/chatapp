@@ -59,10 +59,10 @@ namespace Server.Persistence.Repositories
             }
         }
 
-        public async Task<BaseResponse<User>> LoginUser(LoginCommand user)
+        public async Task<LoginResponse> LoginUser(LoginCommand user)
         {
             var query = "SELECT * FROM [User] WHERE email = @email";
-            var newResponse = new BaseResponse<User>();
+            var newResponse = new LoginResponse();
 
             using (var connection = _dbContext.CreateConnection())
             {

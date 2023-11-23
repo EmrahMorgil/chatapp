@@ -14,7 +14,7 @@ namespace Server.Application.Interfaces.Repository
     public interface IUserRepository
     {
         Task<bool> CreateUser(User user);
-        Task<BaseResponse<User>> LoginUser(LoginCommand user);
+        Task<LoginResponse> LoginUser(LoginCommand user);
         Task<List<UserViewDto>> GetUsers(GetUsersCommand entity);
     }
 }
