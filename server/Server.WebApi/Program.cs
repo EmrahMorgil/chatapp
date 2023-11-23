@@ -27,7 +27,6 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 
 
 //SignalR
-builder.Services.AddTransient<MyBusiness>();
 builder.Services.AddSignalR();
 //---------------
 

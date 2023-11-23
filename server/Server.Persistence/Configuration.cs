@@ -13,7 +13,6 @@ namespace Server.Persistence
         {
             get
             {
-                //appsettings.json içerisinden connection stringi çekmek için bunu yapıyoruz. 2 tane paket yükledik.
                 ConfigurationManager configurationManager = new();
                 configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Server.WebApi"));
                 configurationManager.AddJsonFile("appsettings.json");

@@ -17,13 +17,9 @@ namespace Server.Persistence
     {
         public static void AddPersistenceServices(this IServiceCollection services)
         {
-            //services.AddDbContext<EFDbContext>(options => options.UseSqlServer(Configuration.ConnectionString));
-
             services.AddSingleton<DapperContext>();
-
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-            //services.AddSingleton<Database>();
 
             services.AddLogging(c => c.AddFluentMigratorConsole())
                 .AddFluentMigratorCore()
