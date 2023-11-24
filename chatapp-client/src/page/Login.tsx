@@ -22,7 +22,7 @@ const Login = () => {
         alert("success");
         localStorage.setItem("activeUser", JSON.stringify(response.body));
         localStorage.setItem("token", response.token);
-        window.location.href = `${process.env.REACT_APP_BASE_URL}`;
+        window.location.href = `${window.location.href}`;
       } else {
         alert("Hatalı giriş");
       }
