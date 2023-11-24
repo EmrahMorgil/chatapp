@@ -5,7 +5,7 @@ import { userRegister } from '../services/userService';
 
 const Register = () => {
 
-  const [user, setUser] = React.useState({ email: "", name: "", password: "", image: "default" });
+  const [user, setUser] = React.useState({ email: "", name: "", password: "", image: "https://avatars.akamai.steamstatic.com/8767ed7f5db93d85fb1afdec190131a51b586ebe_full.jpg" });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });

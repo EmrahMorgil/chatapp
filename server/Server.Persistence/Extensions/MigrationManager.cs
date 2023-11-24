@@ -15,14 +15,14 @@ namespace Server.Persistence.Extensions
     {
         public static IHost MigrateDatabase(this IHost host)
         {
-            string connectionString = "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;";
-            string dbName = "chatapp";
+            //string connectionString = "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;";
+            //string dbName = "chatapp";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                    SqlCommand createDbCommand = new SqlCommand($"CREATE DATABASE {dbName}", connection);
-                    createDbCommand.ExecuteNonQuery();
-            }
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //        SqlCommand createDbCommand = new SqlCommand($"CREATE DATABASE {dbName}", connection);
+            //        createDbCommand.ExecuteNonQuery();
+            //}
 
 
 
