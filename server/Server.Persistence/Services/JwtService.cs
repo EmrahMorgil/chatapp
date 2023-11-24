@@ -15,7 +15,7 @@ namespace Server.Persistence.Services
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ExampleSecurityKey"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiry = DateTime.Now.AddMinutes(1);
+            var expiry = DateTime.Now.AddDays(1);
 
             var claims = new[]
             {

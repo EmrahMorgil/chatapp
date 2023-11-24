@@ -6,11 +6,14 @@ import { mdlUser } from "../Core/Modals/User";
 import { getMessages } from "../services/messageService";
 import { GetMessagesDto } from "../Core/Modals/Dto/GetMessagesDto";
 import * as signalR from "@microsoft/signalr";
+import {toast} from "react-toastify";
 
 
 const Home = () => {
-  const getmessage = "../../sounds/getmessage.wav";
-  const sendtomessage = "../../sounds/sendtomessage.wav";
+  const getmessage = new Audio("../../sounds/getmessage.wav");
+  const sendtomessage = new Audio("../../sounds/sendtomessage.wav");
+  const joinroom = new Audio("../../sounds/joinroom.wav");
+  const leaveroom = new Audio("../../sounds/leaveroom.wav");
 
   const [connection, setConnection] = React.useState<signalR.HubConnection | null>(null);
   const [messages, setMessages] = React.useState<mdlMessage[]>([]);
@@ -34,7 +37,7 @@ const Home = () => {
     var activeUser = localStorage.getItem("activeUser");
     var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${process.env.REACT_APP_SERVER_URI}/chat-hub`)
+      .withUrl(`${process.env.REACT_APP_SERVER_URI}/chat-hub?username=${activeUserParse.name}`)
       .withAutomaticReconnect()
       .build();
 
@@ -42,11 +45,23 @@ const Home = () => {
 
     newConnection.on("ReceiveMessage", (message: mdlMessage) => {
       if (message.senderId !== activeUserParse.id)
-        new Audio(getmessage).play();
+        getmessage.play();
       else
-        new Audio(sendtomessage).play();
+        sendtomessage.play();
       setMessages((prevMessages) => [...prevMessages, message]);
     });
+
+    newConnection.on("UserConnection", (message: string) => {
+      if(message.includes("join")){
+        toast.success(message);
+        joinroom.play();
+      }else{
+        toast.error(message);
+        leaveroom.play();
+      }
+    });
+
+    
 
     const startConnection = async () => {
       try {
