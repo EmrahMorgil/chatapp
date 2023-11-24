@@ -22,7 +22,7 @@ const Register = () => {
       if (response.success) {
         // localStorage.setItem("activeUser", JSON.stringify(response.body));
         alert("Kayıt Başarılı !");
-        window.location.href = `${window.location.href}login`;
+        window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`;
       } else {
         alert("Bu email kullanılıyor!");
       }
@@ -49,7 +49,7 @@ const Register = () => {
         </div>
         <div className='d-flex gap-3'>
 
-          <button type='button' className='btn btn-primary' onClick={() => window.location.href = `${window.location.href}login`}>
+          <button type='button' className='btn btn-primary' onClick={() => window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`}>
             Sign In
           </button>
           <button type="button" className="btn btn-warning " onClick={addNewUser}>
