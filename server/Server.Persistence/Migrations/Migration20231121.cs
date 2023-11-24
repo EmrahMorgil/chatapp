@@ -9,15 +9,15 @@ public class AddProductsTable : Migration
         Create.Table("Message")
             .WithColumn("id").AsInt32().PrimaryKey().Identity()
             .WithColumn("senderId").AsGuid().NotNullable()
-            .WithColumn("message").AsString(500).NotNullable()
+            .WithColumn("message").AsCustom("NVARCHAR(MAX)").NotNullable()
             .WithColumn("room").AsString(500).NotNullable()
             .WithColumn("createdDate").AsDateTime().NotNullable();
         Create.Table("User")
             .WithColumn("id").AsGuid().PrimaryKey()
             .WithColumn("email").AsString(50).NotNullable()
             .WithColumn("name").AsString(50).NotNullable()
-            .WithColumn("password").AsString(200).NotNullable()
-            .WithColumn("image").AsString(500).NotNullable()
+            .WithColumn("password").AsString(300).NotNullable()
+            .WithColumn("image").AsCustom("NVARCHAR(MAX)").NotNullable()
             .WithColumn("createdDate").AsDateTime().NotNullable();
     }
 
