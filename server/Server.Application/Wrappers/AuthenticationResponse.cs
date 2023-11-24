@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Wrappers
 {
-    public class LoginResponse: BaseResponse<User>
+    public class AuthenticationResponse : BaseResponse<User>
     {
         public string? token { get; set; }
     }

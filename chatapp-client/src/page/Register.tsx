@@ -20,9 +20,10 @@ const Register = () => {
       newUser.image = user.image;
       const response = await userRegister(newUser);
       if (response.success) {
-        // localStorage.setItem("activeUser", JSON.stringify(response.body));
+        localStorage.setItem("activeUser", JSON.stringify(response.body));
+        localStorage.setItem("token", response.token);
         alert("Kayıt Başarılı !");
-        window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`;
+        window.location.href = `${process.env.REACT_APP_BASE_URL}`;
       } else {
         alert("Bu email kullanılıyor!");
       }

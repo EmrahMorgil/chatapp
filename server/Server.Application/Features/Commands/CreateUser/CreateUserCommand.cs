@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.Commands.CreateUser
 {
-    public class CreateUserCommand: IRequest<BaseResponse<User>>
+    public class CreateUserCommand: IRequest<AuthenticationResponse>
     {
         public string? email { get; set; }
         public string? name { get; set; }
         public string? password { get; set; }
         public string? image { get; set; }
 
-        public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, BaseResponse<User>>
+        public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, AuthenticationResponse>
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
@@ -31,16 +31,13 @@ namespace Server.Application.Features.Commands.CreateUser
                 _mapper = mapper;
             }
 
-            public async Task<BaseResponse<User>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+            public async Task<AuthenticationResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
                 var user = _mapper.Map<Domain.Entities.User>(request);
                 user.id = Guid.NewGuid();
                 user.createdDate = DateTime.Now;
                 user.password = Encryption.EncryptPassword(request.password);
-                var newResponse = new BaseResponse<User>();
-                newResponse.body = user;
-                newResponse.success = await _userRepository.CreateUser(user);
-                return newResponse;
+                return await _userRepository.CreateUser(user);
             }
 
         }

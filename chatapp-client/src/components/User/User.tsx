@@ -5,6 +5,7 @@ import { getUsers } from '../../services/userService'
 import { mdlUser } from '../../Core/Modals/User'
 import { GetUsersDto } from '../../Core/Modals/Dto/GetUsersDto'
 import { UserViewDto } from '../../Core/Modals/Dto/UserViewDto'
+import { HandleLogout } from '../helpers/HandleLogout'
 
 
 interface UserProps {
@@ -28,7 +29,8 @@ const User: React.FC<UserProps> = (props) => {
         const response = await getUsers(request, token);
         if (response.success)
           setUsers(response.body);
-      }
+      } else
+        HandleLogout();
     }
     fetchData();
   }, [])

@@ -13,8 +13,8 @@ namespace Server.Application.Interfaces.Repository
 {
     public interface IUserRepository
     {
-        Task<bool> CreateUser(User user);
-        Task<LoginResponse> LoginUser(LoginCommand user);
+        Task<AuthenticationResponse> CreateUser(User user);
+        Task<AuthenticationResponse> LoginUser(LoginCommand user);
         Task<List<UserViewDto>> GetUsers(GetUsersCommand entity);
     }
 }

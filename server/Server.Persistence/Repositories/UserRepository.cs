@@ -26,26 +26,32 @@ namespace Server.Persistence.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<bool> CreateUser(User user)
+        public async Task<AuthenticationResponse> CreateUser(User user)
         {
             var query = $"INSERT INTO [User] ({RepositoryHelper.GetInsertFields<User>()}) VALUES ({RepositoryHelper.GetInsertFieldParams<User>()})";
             var emailControl = "SELECT * FROM [User] WHERE email = @email";
+            var newResponse = new AuthenticationResponse();
 
             using (var connection = _dbContext.CreateConnection())
             {
                 var getUser = await connection.QueryFirstOrDefaultAsync<User>(emailControl, new { email = user.email });
 
                 if (getUser != null)
-                    return false;
+                    newResponse.success = false;
                 else
                 {
                     var userControl = await connection.ExecuteAsync(query, user);
                     if (userControl != null)
-                        return true;
+                    {
+                        newResponse.success = true;
+                        newResponse.body = user;
+                        newResponse.token = JwtService.GenerateToken(user.email);
+                    }
                     else
-                        return false;
+                        newResponse.success = false;
                 }
             }
+            return newResponse;
         }
 
         public async Task<List<UserViewDto>> GetUsers(GetUsersCommand entity)
@@ -59,10 +65,10 @@ namespace Server.Persistence.Repositories
             }
         }
 
-        public async Task<LoginResponse> LoginUser(LoginCommand user)
+        public async Task<AuthenticationResponse> LoginUser(LoginCommand user)
         {
             var query = "SELECT * FROM [User] WHERE email = @email";
-            var newResponse = new LoginResponse();
+            var newResponse = new AuthenticationResponse();
 
             using (var connection = _dbContext.CreateConnection())
             {
