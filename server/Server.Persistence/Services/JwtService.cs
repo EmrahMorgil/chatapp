@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Server.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,16 +14,18 @@ namespace Server.Persistence.Services
     {
         public static string GenerateToken(string Email)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ExampleSecurityKey"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiry = DateTime.Now.AddDays(1);
+            var settings = Configuration.GetSettings<Settings>("TokenInfo");
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Secret));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiry = DateTime.Now.AddDays(settings.ValidityPeriod);
+            
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, Email)
             };
 
-            var token = new JwtSecurityToken("http://morfit.com", "http://morfit.com", claims, null, expiry, creds);
+            var token = new JwtSecurityToken(settings.ValidAudience, settings.ValidIssuer, claims, null, expiry, creds);
 
             String tokenStr = new JwtSecurityTokenHandler().WriteToken(token);
 

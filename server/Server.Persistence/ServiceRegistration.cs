@@ -25,7 +25,7 @@ namespace Server.Persistence
                 .AddFluentMigratorCore()
                 .ConfigureRunner(c => c
                     .AddSqlServer2012()
-                    .WithGlobalConnectionString("server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;")
+                    .WithGlobalConnectionString(Configuration.GetSettings<string>("ConnectionStrings"))
                     .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations());
         }
     }

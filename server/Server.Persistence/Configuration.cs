@@ -7,18 +7,16 @@ using System.Threading.Tasks;
 
 namespace Server.Persistence
 {
-    static class Configuration
+    public class Configuration
     {
-        static public string ConnectionString
+         public static T GetSettings<T>(string key)
         {
-            get
-            {
-                ConfigurationManager configurationManager = new();
-                configurationManager.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Server.WebApi"));
-                configurationManager.AddJsonFile("appsettings.json");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-                return configurationManager.GetConnectionString("DefaultConnection");
-            }
+            return configuration.GetSection(key).Get<T>();
         }
     }
 }

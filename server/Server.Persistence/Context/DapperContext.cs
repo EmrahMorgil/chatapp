@@ -16,7 +16,7 @@ namespace Server.Persistence.Context
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;";
+            _connectionString = Configuration.GetSettings<string>("ConnectionStrings");
         }
         public IDbConnection CreateConnection()
             => new SqlConnection(_connectionString);

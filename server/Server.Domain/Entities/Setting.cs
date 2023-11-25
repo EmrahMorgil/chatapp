@@ -8,9 +8,9 @@ namespace Server.Domain.Entities
 {
     public class Settings
     {
-        public string? secret { get; set; }
-        public string? validIssuer { get; set; }
-        public string? validAudience { get; set; }
-        public int validityPeriod { get; set; }
+        public string? Secret { get; set; }
+        public string? ValidIssuer { get; set; }
+        public string? ValidAudience { get; set; }
+        public int ValidityPeriod { get; set; }
     }
 }
