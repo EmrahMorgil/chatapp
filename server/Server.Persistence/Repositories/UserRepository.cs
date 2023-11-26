@@ -56,7 +56,7 @@ namespace Server.Persistence.Repositories
 
         public async Task<List<UserViewDto>> GetUsers(GetUsersCommand entity)
         {
-            var query = $"SELECT [id],[name],[image] FROM [User] WHERE id <> '{entity.id}'";
+            var query = $"SELECT [id],[name],[image] FROM [User]";
 
             using (var connection = _dbContext.CreateConnection())
             {

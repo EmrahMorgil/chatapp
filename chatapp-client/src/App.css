@@ -48,3 +48,20 @@
     background: #4e4e4e;
     border-radius: 25px;
 }
+
+
+/* userPage */
+.online-point{
+    display: inline-block;
+  width: 10px; 
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(0, 234, 0); 
+}
+.offline-point{
+    display: inline-block;
+    width: 10px; 
+    height: 10px;
+    border-radius: 50%;
+    background-color: red; 
+}

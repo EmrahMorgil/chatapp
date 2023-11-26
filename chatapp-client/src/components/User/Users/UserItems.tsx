@@ -1,15 +1,15 @@
 import React from "react";
-import { mdlUser } from "../../../Core/Modals/User";
+import { UserViewDto } from "../../../Core/Modals/Dto/UserViewDto";
 
 interface UserItemsProps {
-  item?: mdlUser;
+  item?: UserViewDto;
   fnGetMessages?: Function;
 }
 
 const UserItems: React.FC<UserItemsProps> = (props) => {
 
-  const fnGetMessages = (user: mdlUser) => {
-    localStorage.setItem("takerUser", JSON.stringify({ image: user.image, id: user.id, name: user.name }));
+  const fnGetMessages = (user: UserViewDto) => {
+    localStorage.setItem("takerUser", JSON.stringify({ id: user.id, name: user.name, image: user.image }));
     props.fnGetMessages!(props.item?.id)
   }
 
@@ -18,8 +18,7 @@ const UserItems: React.FC<UserItemsProps> = (props) => {
       <div className="d-flex gap-3">
         <img style={{ borderRadius: "50%", marginLeft: "30px" }} src={props.item?.image} alt="" width={"70px"} height={"70px"} />
         <div className="d-flex flex-column justify-content-center">
-          <p style={{ color: "white", padding: "0px", margin: "0px" }}>{props.item?.name}</p>
-          {/* <p style={{ color: "grey", padding: "0px", marginTop: "0px" }}>{props.item?.lastMessage}</p> */}
+          <div style={{ color: "white", padding: "0px", margin: "0px" }}>{props.item?.name} <span className={`ms-2 ${props.item?.status ? "online-point" : "offline-point"}`}></span></div>
         </div>
       </div>
     </div>

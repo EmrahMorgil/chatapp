@@ -1,7 +1,7 @@
 import React from "react";
 import { userLogin } from "../services/userService";
 import { UserLoginDto } from "../Core/Modals/Dto/UserLoginDto";
-
+import {toast} from "react-toastify";
 
 
 const Login = () => {
@@ -19,12 +19,11 @@ const Login = () => {
       newUser.password = user.password;
       const response = await userLogin(newUser);
       if (response.success) {
-        alert("success");
         localStorage.setItem("activeUser", JSON.stringify(response.body));
         localStorage.setItem("token", response.token);
         window.location.href = `${process.env.REACT_APP_BASE_URL}`;
       } else {
-        alert("Hatalı giriş");
+        toast.warning("Hatalı giriş");
       }
     }
   }

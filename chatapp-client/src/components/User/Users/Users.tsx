@@ -1,9 +1,10 @@
 import React from 'react'
 import UserItems from './UserItems';
+import { UserViewDto } from '../../../Core/Modals/Dto/UserViewDto';
 import { mdlUser } from '../../../Core/Modals/User';
 
 interface UsersProps {
-  users?: mdlUser[];
+  users?: UserViewDto[];
   fnGetMessages?: Function;
 }
 
@@ -14,7 +15,7 @@ const Users: React.FC<UsersProps> = (props) => {
 
   return (
     <div className='user-scroll' style={{ height: "730px", paddingTop: "1rem" }}>
-      {props.users?.map((i: mdlUser, key: number) => {
+      {props.users?.map((i: UserViewDto, key: number) => {
         if (i.id !== activeUserParse.id)
           return <UserItems key={key} item={i} fnGetMessages={props.fnGetMessages} />
       })}
