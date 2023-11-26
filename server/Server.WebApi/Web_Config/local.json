@@ -6,14 +6,12 @@
     }
   },
   "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "DefaultConnection": "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;"
-  },
+  "ConnectionStrings": "server=localhost;database=chatapp;trusted_connection=true;TrustServerCertificate=True;",
   "TokenInfo": {
     "Secret": "ExampleSecurityKey",
     "ValidIssuer": "http://morfit.com",
     "ValidAudience": "http://morfit.com",
     "ValidityPeriod": 1
-    // 1 g�n ge�erli token
+    // 1 gun gecerli token
   }
 }
