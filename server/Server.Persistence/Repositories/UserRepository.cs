@@ -4,6 +4,7 @@ using Server.Application.Dto;
 using Server.Application.Features.Commands.GetAllMessages;
 using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
+using Server.Application.Features.Commands.UpdateUser;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
 using Server.Application.Wrappers;
@@ -72,7 +73,7 @@ namespace Server.Persistence.Repositories
 
             using (var connection = _dbContext.CreateConnection())
             {
-                var userControl = await connection.QueryFirstOrDefaultAsync<User>(query, new { email = user.email});
+                var userControl = await connection.QueryFirstOrDefaultAsync<User>(query, new { email = user.email });
                 if (userControl != null)
                 {
                     newResponse.success = Encryption.VerifyPassword(user.password, userControl.password);
@@ -86,6 +87,26 @@ namespace Server.Persistence.Repositories
             }
         }
 
-       
+        public async Task<BaseResponse<User>> UpdateUser(UpdateUserCommand user)
+        {
+            var query = $"UPDATE [User] SET name = '{user.name}', email = '{user.email}', password = '{user.password}', image = '{user.image}' WHERE id = '{user.id}';";
+            var updatedUserQuery = $"SELECT * FROM [User] WHERE id = '{user.id}'";
+            var newResponse = new BaseResponse<User>();
+
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var userControl = await connection.ExecuteAsync(query);
+                var updatedUser = await connection.QueryFirstOrDefaultAsync<User>(updatedUserQuery, new { id = user.id });
+                if (userControl != null && updatedUser != null)
+                {
+                    newResponse.success = true;
+                    newResponse.body = updatedUser;
+                }
+                else
+                    newResponse.success = false;
+            }
+            return newResponse;
+        }
+
     }
 }

@@ -6,6 +6,8 @@ using Server.Application.Features.Commands.CreateUser;
 using Server.Application.Features.Commands.GetAllMessages;
 using Server.Application.Features.Commands.GetUsers;
 using Server.Application.Features.Commands.Login;
+using Server.Application.Features.Commands.UpdateUser;
+using Server.Domain.Entities;
 
 namespace Server.WebApi.Controllers
 {
@@ -27,6 +29,12 @@ namespace Server.WebApi.Controllers
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginCommand user)
+        {
+            return Ok(await _mediator.Send(user));
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(UpdateUserCommand user)
         {
             return Ok(await _mediator.Send(user));
         }

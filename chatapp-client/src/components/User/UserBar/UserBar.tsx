@@ -20,7 +20,8 @@ const UserBar = () => {
         <span className="rotate" aria-hidden="true">⚙️</span>
         </button>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><button className="dropdown-item btn btn-danger" onClick={HandleLogout}>Logout</button></li>
+          <li><button className='dropdown-item btn' onClick={()=>window.location.href = `${process.env.REACT_APP_BASE_URL}/profile`}>Profile</button></li>
+          <li><button className="dropdown-item btn" onClick={HandleLogout}>Logout</button></li>
         </ul>
       </div>
     </div>
