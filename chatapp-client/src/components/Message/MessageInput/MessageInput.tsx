@@ -18,7 +18,7 @@ const MessageInput: React.FC<MessageInputProps> = (props) => {
     e.preventDefault();
     var token = localStorage.getItem("token");
 
-    if (inputValue !== "" && token) {
+    if (inputValue.trim() !== "" && token) {
       var activeUser = localStorage.getItem("activeUser");
       var room = localStorage.getItem("room");
       var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
@@ -30,6 +30,8 @@ const MessageInput: React.FC<MessageInputProps> = (props) => {
       await addMessage(newMessage, token);
       setInputValue("");
       props.scrollToBottom!();
+    }else{
+      setInputValue("");
     }
   }
 
