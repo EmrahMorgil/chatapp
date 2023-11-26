@@ -65,3 +65,37 @@
     border-radius: 50%;
     background-color: red; 
 }
+
+.online-point-header {
+    width: 10px;
+    height: 10px;
+    background-color: rgb(0, 234, 0); 
+    animation: big-and-small 1.5s infinite; /* "hareket" adında bir animasyon, 2 saniye süreyle ve sonsuz tekrarla */
+    display: inline-block;
+    border-radius: 50%;
+  }
+  
+  /* Animasyonu tanımlayalım */
+  @keyframes big-and-small {
+    0% {
+        transform: scale(1); /* Normal boyutta başlangıç */
+      }
+      50% {
+        transform: scale(1.5); /* Orta noktada büyütme */
+      }
+      100% {
+        transform: scale(1); /* Başlangıç boyutuna dönme */
+      }
+  }
+
+
+  .rotate{
+    display: inline-block;
+    animation: rotate 1.5s infinite linear;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg); /* 360 derece dönme */
+    }
+  }
