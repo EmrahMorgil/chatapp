@@ -16,5 +16,6 @@ namespace Server.Domain.Entities
         public string? message { get; set; }
         public string? room { get; set; }
         public DateTime createdDate { get; set; }
+        public string? senderUserName { get; set; }
     }
 }

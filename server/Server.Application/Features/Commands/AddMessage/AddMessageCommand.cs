@@ -13,6 +13,7 @@ namespace Server.Application.Features.Commands.AddMessage
 {
     public class AddMessageCommand: IRequest<BaseResponse<Message>>
     {
+        public string? senderUserName { get; set; }
         public string? senderId { get; set; }
         public string? message { get; set; }
         public string? room { get; set; }

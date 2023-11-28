@@ -10,13 +10,12 @@ interface UsersProps {
 
 const Users: React.FC<UsersProps> = (props) => {
 
-  var activeUser = localStorage.getItem("activeUser");
-  var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
+  var activeUser: mdlUser = JSON.parse(localStorage.getItem("activeUser")!);
 
   return (
     <div className='user-scroll' style={{ height: "730px", paddingTop: "1rem" }}>
       {props.users?.map((i: UserViewDto, key: number) => {
-        if (i.id !== activeUserParse.id)
+        if (i.id !== activeUser.id)
           return <UserItems key={key} item={i} fnGetMessages={props.fnGetMessages} />
       })}
     </div>

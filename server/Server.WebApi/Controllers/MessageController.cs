@@ -37,7 +37,7 @@ namespace Server.WebApi.Controllers
         public async Task<IActionResult> Post(AddMessageCommand command)
         {
             var request = await _mediator.Send(command);
-            await _hubContext.Clients.Group(command.room).SendAsync("ReceiveMessage", request.body);
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", request.body);
             return Ok(request);
         }
 

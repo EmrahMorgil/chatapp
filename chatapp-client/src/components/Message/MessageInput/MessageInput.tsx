@@ -27,6 +27,7 @@ const MessageInput: React.FC<MessageInputProps> = (props) => {
       newMessage.message = inputValue;
       newMessage.senderId = activeUserParse.id;
       newMessage.room = room ?? "";
+      newMessage.senderUserName = activeUserParse.name;
       await addMessage(newMessage, token);
       setInputValue("");
       props.scrollToBottom!();
