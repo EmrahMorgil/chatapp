@@ -66,6 +66,15 @@
     background-color: red; 
 }
 
+.unread-message-point{
+  display: inline-block;
+  width: 10px; 
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgb(255, 183, 0); 
+  animation: big-and-small 0.8s infinite;
+}
+
 .online-point-header {
     width: 10px;
     height: 10px;
