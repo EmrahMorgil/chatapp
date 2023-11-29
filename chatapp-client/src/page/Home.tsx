@@ -13,11 +13,6 @@ import { UserViewDto } from "../Core/Modals/Dto/UserViewDto";
 import { HandleLogout } from "../components/helpers/HandleLogout";
 import { UserConnect } from "../Core/Modals/Dto/UserConnect";
 
-
-
-
-
-
 const Home = () => {
   const getmessage = new Audio("../../sounds/getmessage.wav");
   const sendtomessage = new Audio("../../sounds/sendtomessage.wav");
@@ -58,7 +53,13 @@ const Home = () => {
         if (message.senderId !== activeUser.id){
           getmessage.play();
           if(localStorage.getItem("room") == null || localStorage.getItem("room") !== message.room){
+            var unreadUsers: string[] = JSON.parse(localStorage.getItem("unreadUsers")!);
             toast.success(`${message.senderUserName}: ${message.message}`);
+            var newUnreadUsers: string[] = [];
+            if(unreadUsers)
+              newUnreadUsers = unreadUsers;
+            newUnreadUsers.push(message.senderId!);
+            localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
           }
         }
       else
