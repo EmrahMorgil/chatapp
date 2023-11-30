@@ -20,7 +20,7 @@ const UserItems: React.FC<UserItemsProps> = (props) => {
       document.getElementById("u"+props.item?.id!)?.classList.add("block");
     }
   }
-  var unreadMessageControl = JSON.parse(localStorage.getItem("unreadUsers")!).some((i: string)=>i==props.item?.id) ?? null;
+  var unreadMessageControl =  JSON.parse(localStorage.getItem("unreadUsers")!) && JSON.parse(localStorage.getItem("unreadUsers")!).some((i: string)=>i==props.item?.id);
 
   return (
     <div id={"id" + String(props.item?.id)} className="user" style={{ padding: "20px" }} onClick={() => fnGetMessages(props.item!)}>
