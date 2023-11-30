@@ -60,6 +60,9 @@ const Home = () => {
               newUnreadUsers = unreadUsers;
             newUnreadUsers.push(message.senderId!);
             localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
+            document.getElementById("u"+message.senderId!)?.classList.add("none");
+            document.getElementById("u"+message.senderId!)?.classList.remove("block");
+            document.getElementById(message.senderId!)?.classList.add("block");
           }
         }
       else
