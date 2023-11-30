@@ -64,7 +64,9 @@ const Home = () => {
         }
       else
         sendtomessage.play();
-      setMessages((prevMessages) => [...prevMessages, message]);
+      
+        if(message.room === localStorage.getItem("room"))
+        setMessages((prevMessages) => [...prevMessages, message]);
       }
     });
 
