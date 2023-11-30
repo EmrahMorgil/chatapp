@@ -108,3 +108,11 @@
       transform: rotate(360deg); /* 360 derece dönme */
     }
   }
+
+
+  .none{
+    display: none;
+  }
+  .block{
+    display: block;
+  }
