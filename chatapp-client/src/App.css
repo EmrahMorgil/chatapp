@@ -116,3 +116,8 @@
   .block{
     display: block;
   }
+
+  body {
+    overflow-x: hidden; /* Yatay kaydırmayı kapatır */
+    overflow-y: auto; /* Dikey kaydırmayı etkinleştirir */
+}
