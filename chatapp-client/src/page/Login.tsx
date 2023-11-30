@@ -25,6 +25,8 @@ const Login = () => {
       } else {
         toast.warning("Hatalı giriş");
       }
+    }else{
+      toast.warning("All fields must be filled!");
     }
   }
 
