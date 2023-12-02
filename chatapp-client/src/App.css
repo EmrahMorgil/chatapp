@@ -116,7 +116,26 @@
 
 
 @media (min-width: 768px) {
+  /* ekran boyutu 768px den büyük olduğu sürece çalışır */
   .custom-row-md {
       display: flex;
+  }
+  .message-container-heighth{
+    height: 50rem;
+  }
+  
+}
+
+
+@media screen and (min-width: 670px) {
+  .custom-heigth {
+    height: 670px;
+  }
+}
+
+/* 669px ve altı ekranlar için */
+@media screen and (max-width: 768px) {
+  .custom-heigth {
+    height: 600px;
   }
 }

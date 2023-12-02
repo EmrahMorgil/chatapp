@@ -22,13 +22,13 @@ const Messages: React.FC<MessagesProps> = (props) => {
 
 
   if (!activeTakerUserParse)
-    return <div className="message-scroll p-4 d-flex justify-content-center align-items-center"
-      style={{ backgroundColor: "#0C1317", height: "670px", color: "white" }}>
+    return <div className="message-scroll p-4 d-flex justify-content-center align-items-center custom-heigth"
+      style={{ backgroundColor: "#0C1317", color: "white" }}>
       <h5>Send a message!</h5>
     </div>
 
   return (
-    <div id="messages-container" className="message-scroll p-4" style={{ backgroundColor: "grey", height: "670px", color: "white" }}>
+    <div id="messages-container" className="message-scroll p-4 custom-heigth" style={{ backgroundColor: "grey", color: "white" }}>
       {props.messages?.map((i: mdlMessage, key) => {
         return <MessageItems message={i} key={key} />;
       })}
