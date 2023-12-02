@@ -16,8 +16,8 @@ const UserItems: React.FC<UserItemsProps> = (props) => {
     if(unreadUsers){
       var newUnreadUsers = unreadUsers.filter((i)=>i!=user.id);
       localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
-      document.getElementById(props.item?.id!)?.classList.remove("block");
-      document.getElementById("u"+props.item?.id!)?.classList.add("block");
+      document.getElementById(props.item?.id!)?.classList.add("d-none");
+      document.getElementById("u"+props.item?.id!)?.classList.remove("d-none");
     }
   }
   var unreadMessageControl =  JSON.parse(localStorage.getItem("unreadUsers")!) && JSON.parse(localStorage.getItem("unreadUsers")!).some((i: string)=>i==props.item?.id);
@@ -28,8 +28,8 @@ const UserItems: React.FC<UserItemsProps> = (props) => {
         <img style={{ borderRadius: "50%", marginLeft: "30px" }} src={props.item?.image} alt="" width={"70px"} height={"70px"} />
         <div className="d-flex flex-column justify-content-center">
           <div className="d-flex align-items-center" style={{ color: "white", padding: "0px", margin: "0px" }}><span>{props.item?.name}</span> 
-          <span id={props.item?.id} className={`ms-3 unread-message-point ${unreadMessageControl ? "block" : "none"}`}></span>
-         <span id={"u"+props.item?.id} className={`ms-2 ${props.item?.status ? "online-point" : "offline-point"} ${unreadMessageControl ? "none" : "block"}`}></span>
+          <span id={props.item?.id} className={`ms-3 unread-message-point ${unreadMessageControl ? "" : "d-none"}`}></span>
+         <span id={"u"+props.item?.id} className={`ms-2 ${props.item?.status ? "online-point" : "offline-point"} ${unreadMessageControl ? "d-none" : ""}`}></span>
           </div>
          
         </div>

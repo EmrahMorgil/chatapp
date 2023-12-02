@@ -3,6 +3,7 @@ import UserBar from './UserBar/UserBar'
 import Users from './Users/Users'
 import { UserViewDto } from '../../Core/Modals/Dto/UserViewDto'
 import { HandleLogout } from '../helpers/HandleLogout';
+import { mdlUser } from '../../Core/Modals/User';
 
 
 interface UserProps {
@@ -13,6 +14,9 @@ interface UserProps {
 
 const User: React.FC<UserProps> = (props) => {
 
+  var activeUser: mdlUser = JSON.parse(localStorage.getItem("activeUser")!);
+  var takerUser: mdlUser = JSON.parse(localStorage.getItem("takerUser")!);
+
   const fnGetMessages = (user: UserViewDto) => {
     localStorage.setItem("takerUser", JSON.stringify({ id: user.id, name: user.name, image: user.image }));
     props.fnGetMessages!(user.id)
@@ -21,8 +25,8 @@ const User: React.FC<UserProps> = (props) => {
     if(unreadUsers){
       var newUnreadUsers = unreadUsers.filter((i)=>i!=user.id);
       localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
-      document.getElementById(user.id!)?.classList.remove("block");
-      document.getElementById("u"+user.id!)?.classList.add("block");
+      document.getElementById("u"+user.id!)?.classList.add("d-none");
+      document.getElementById(user.id!)?.classList.remove("d-none");
     }
   }
 
@@ -35,16 +39,30 @@ const User: React.FC<UserProps> = (props) => {
 
 
     </div>
-    <div className="dropdown d-lg-none d-md-none ms-5">
-        <button className="btn btn-secondary dropdown-toggle" id="showUsers" data-bs-toggle="dropdown" aria-expanded="false">
-        <span className="" aria-hidden="true">Users</span>
+    <div className="dropdown d-lg-none d-md-none d-flex">
+        <button className="btn btn-dark dropdown-toggle w-50" id="showUsers" data-bs-toggle="dropdown" aria-expanded="false">
+        <span className="" aria-hidden="true">{takerUser ? takerUser.name : "Users"}</span>
         </button>
-        <button className='btn btn-danger' onClick={HandleLogout}>Logout</button>
+        
+
+        <div className="dropdown w-50">
+        <button className="btn btn-secondary dropdown-toggle w-100" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+        <span className="rotate" aria-hidden="true">⚙️</span>
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+          <li><button className='dropdown-item btn'>Profile</button></li>
+          <li><button className="dropdown-item btn" onClick={HandleLogout}>Logout</button></li>
+        </ul>
+      </div>
+
+
         <ul className="dropdown-menu" aria-labelledby="showUsers">
           {/* <li><button className='dropdown-item btn' onClick={()=>window.location.href = `${process.env.REACT_APP_BASE_URL}/profile`}>Profile</button></li> */}
           <li>
-            {props.users?.map((u: UserViewDto)=>
-            <button key={u.id} className="dropdown-item btn" onClick={()=>fnGetMessages(u)}>{u.name}</button>
+            {props.users?.map((u: UserViewDto)=>{
+              if(u.id !== activeUser.id)
+              return <button key={u.id} className="dropdown-item btn" onClick={()=>fnGetMessages(u)}>{u.name}</button>
+            }
             )}
           </li>
         </ul>
