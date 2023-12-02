@@ -109,15 +109,14 @@
     }
   }
 
-
-  .none{
-    display: none;
-  }
-  .block{
-    display: block;
-  }
-
   body {
     overflow-x: hidden; /* Yatay kaydırmayı kapatır */
     overflow-y: auto; /* Dikey kaydırmayı etkinleştirir */
+}
+
+
+@media (min-width: 768px) {
+  .custom-row-md {
+      display: flex;
+  }
 }

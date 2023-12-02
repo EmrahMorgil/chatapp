@@ -60,9 +60,8 @@ const Home = () => {
               newUnreadUsers = unreadUsers;
             newUnreadUsers.push(message.senderId!);
             localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
-            document.getElementById("u"+message.senderId!)?.classList.add("none");
-            document.getElementById("u"+message.senderId!)?.classList.remove("block");
-            document.getElementById(message.senderId!)?.classList.add("block");
+            document.getElementById("u"+message.senderId!)?.classList.add("d-none");
+            document.getElementById(message.senderId!)?.classList.remove("d-none");
           }
         }
       else
@@ -146,7 +145,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className="row align-items-center justify-content-center" style={{ height: "100vh" }}>
+      <div className="custom-row-md align-items-center justify-content-center mt-md-5">
         <User fnGetMessages={fnGetMessages} users={users}/>
         <Message messages={messages} scrollToBottom={scrollToBottom} />
       </div>
