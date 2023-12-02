@@ -136,6 +136,6 @@
 /* 669px ve altı ekranlar için */
 @media screen and (max-width: 768px) {
   .custom-heigth {
-    height: 600px;
+    height: 500px;
   }
 }
