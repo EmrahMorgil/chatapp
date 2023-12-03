@@ -28,7 +28,7 @@ const Messages: React.FC<MessagesProps> = (props) => {
     </div>
 
   return (
-    <div id="messages-container" className="message-scroll p-4 custom-heigth" style={{ backgroundColor: "grey", color: "white" }}>
+    <div id="messages-container" className="message-scroll p-4 custom-heigth message-background" style={{ color: "white" }}>
       {props.messages?.map((i: mdlMessage, key) => {
         return <MessageItems message={i} key={key} />;
       })}

@@ -1,5 +1,6 @@
 import React from "react";
 import { UserViewDto } from "../../../Core/Modals/Dto/UserViewDto";
+import { mdlUser } from "../../../Core/Modals/User";
 
 interface UserItemsProps {
   item?: UserViewDto;
@@ -9,15 +10,23 @@ interface UserItemsProps {
 const UserItems: React.FC<UserItemsProps> = (props) => {
 
   const fnGetMessages = (user: UserViewDto) => {
-    localStorage.setItem("takerUser", JSON.stringify({ id: user.id, name: user.name, image: user.image }));
-    props.fnGetMessages!(props.item?.id)
+    
+    const takerUser: mdlUser | null = JSON.parse(localStorage.getItem("takerUser")!) ?? null;
 
-    var unreadUsers: string[] = JSON.parse(localStorage.getItem("unreadUsers")!)
-    if(unreadUsers){
-      var newUnreadUsers = unreadUsers.filter((i)=>i!=user.id);
-      localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
-      document.getElementById(props.item?.id!)?.classList.add("d-none");
-      document.getElementById("u"+props.item?.id!)?.classList.remove("d-none");
+    if(takerUser?.id !== user.id){
+
+      
+      localStorage.setItem("takerUser", JSON.stringify({ id: user.id, name: user.name, image: user.image }));
+      props.fnGetMessages!(props.item?.id)
+      
+      var unreadUsers: string[] = JSON.parse(localStorage.getItem("unreadUsers")!)
+      if(unreadUsers){
+        var newUnreadUsers = unreadUsers.filter((i)=>i!=user.id);
+        localStorage.setItem("unreadUsers", JSON.stringify(newUnreadUsers));
+        document.getElementById(props.item?.id!)?.classList.add("d-none");
+        document.getElementById("u"+props.item?.id!)?.classList.remove("d-none");
+      }
+      
     }
   }
   var unreadMessageControl =  JSON.parse(localStorage.getItem("unreadUsers")!) && JSON.parse(localStorage.getItem("unreadUsers")!).some((i: string)=>i==props.item?.id);

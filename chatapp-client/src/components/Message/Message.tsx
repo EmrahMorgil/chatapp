@@ -13,7 +13,7 @@ interface MessageProps {
 const Message: React.FC<MessageProps> = (props) => {
 
   return (
-    <div className='col-xl-6 col-md-6 col-sm-12 message-container-heighth' style={{backgroundColor: "#111B21", border: "1px solid white", padding: "0px", margin: "0px" }}>
+    <div className='col-xl-6 col-md-6 col-sm-12 message-container-heighth' style={{backgroundColor: "#111B21", borderLeft: "1px solid white", padding: "0px", margin: "0px" }}>
       <MessageBar />
       <Messages messages={props.messages} scrollToBottom={props.scrollToBottom} />
       <MessageInput scrollToBottom={props.scrollToBottom} />
