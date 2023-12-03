@@ -12,6 +12,7 @@ import { getUsers } from "../services/userService";
 import { UserViewDto } from "../Core/Modals/Dto/UserViewDto";
 import { HandleLogout } from "../components/helpers/HandleLogout";
 import { UserConnect } from "../Core/Modals/Dto/UserConnect";
+import LoadingSpinner from "../components/helpers/LoadingSpinner";
 
 const Home = () => {
   const getmessage = new Audio("../../sounds/getmessage.wav");
@@ -23,11 +24,13 @@ const Home = () => {
   const [messages, setMessages] = React.useState<mdlMessage[]>([]);
   const [pageOnReload, setPageOnReload] = React.useState(true);
   const [users, setUsers] = React.useState<UserViewDto[]>([]);
+  const [loadingScreen, setLoadingScreen] = React.useState(false);
   const activeUser: mdlUser = JSON.parse(localStorage.getItem("activeUser")!);
 
   React.useEffect(() => {
 
     if (!connection){
+      setLoadingScreen(true);
       fnGetConnection();
     }
 
@@ -92,6 +95,7 @@ const Home = () => {
         });
 
         setUsers(response.body);
+        setLoadingScreen(false);
     });
 
     
@@ -109,13 +113,13 @@ const Home = () => {
 
   const fnGetMessages = async (id?: string) => {
 
-    const takerUser = localStorage.getItem("takerUser");
-    const activeTakerUserParse: mdlUser = takerUser ? JSON.parse(takerUser) : null;
+    setLoadingScreen(true);
+    const takerUser = JSON.parse(localStorage.getItem("takerUser")!);
     let dynamicId = undefined;
 
 
-    if (id || activeTakerUserParse) {
-      dynamicId = id || activeTakerUserParse.id;
+    if (id || takerUser) {
+      dynamicId = id || takerUser.id;
     }
 
     const items = document.querySelectorAll('.user');
@@ -133,7 +137,7 @@ const Home = () => {
         localStorage.setItem("room", response.body.room);
       }
     }
-
+    setLoadingScreen(false);
   }
 
   function scrollToBottom() {
@@ -145,9 +149,10 @@ const Home = () => {
 
   return (
     <div>
-      <div className="custom-row-md align-items-center justify-content-center mt-md-5">
+      <div className={`custom-row-md align-items-center justify-content-center mt-md-5 ${loadingScreen && "loading-screen-active"}`}>
         <User fnGetMessages={fnGetMessages} users={users}/>
         <Message messages={messages} scrollToBottom={scrollToBottom} />
+        {loadingScreen && <LoadingSpinner />}
       </div>
     </div>
   );
