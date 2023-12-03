@@ -32,13 +32,7 @@ namespace Server.Application.Features.Commands.GetUsers
             public async Task<BaseResponse<List<UserViewDto>>> Handle(GetUsersCommand request, CancellationToken cancellationToken)
             {
 
-                var newResponse = new BaseResponse<List<UserViewDto>>();
-                newResponse.body = await _userRepository.GetUsers(request);
-                if (newResponse.body != null)
-                    newResponse.success = true;
-                else
-                    newResponse.success = false;
-                return newResponse;
+                return await _userRepository.GetUsers(request);
             }
 
         }

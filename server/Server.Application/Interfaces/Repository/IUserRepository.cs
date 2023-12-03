@@ -12,7 +12,7 @@ namespace Server.Application.Interfaces.Repository
     {
         Task<AuthenticationResponse> CreateUser(User user);
         Task<AuthenticationResponse> LoginUser(LoginCommand user);
-        Task<List<UserViewDto>> GetUsers(GetUsersCommand entity);
+        Task<BaseResponse<List<UserViewDto>>> GetUsers(GetUsersCommand entity);
         Task<BaseResponse<User>> UpdateUser(UpdateUserCommand user);
     }
 }
