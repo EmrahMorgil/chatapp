@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using Dapper;
+using MediatR;
 using Server.Application.Dto;
 using Server.Application.Features.Commands.GetAllMessages;
 using Server.Application.Features.Commands.GetUsers;
@@ -55,15 +56,27 @@ namespace Server.Persistence.Repositories
             return newResponse;
         }
 
-        public async Task<List<UserViewDto>> GetUsers(GetUsersCommand entity)
+        public async Task<BaseResponse<List<UserViewDto>>> GetUsers(GetUsersCommand entity)
         {
+            var newResponse = new BaseResponse<List<UserViewDto>>();
             var query = $"SELECT [id],[name],[image] FROM [User]";
 
             using (var connection = _dbContext.CreateConnection())
             {
-                var users = await connection.QueryAsync<UserViewDto>(query);
-                return users.ToList();
+                var user = await connection.QueryFirstOrDefaultAsync<User>(query, new { id = entity.id });
+                if (user != null)
+                {
+                    var users = await connection.QueryAsync<UserViewDto>(query);
+                    newResponse.body = users.ToList();
+                }
             }
+
+            if (newResponse.body != null)
+                newResponse.success = true;
+            else
+                newResponse.success = false;
+
+            return newResponse;
         }
 
         public async Task<AuthenticationResponse> LoginUser(LoginCommand user)
@@ -107,6 +120,5 @@ namespace Server.Persistence.Repositories
             }
             return newResponse;
         }
-
     }
 }
