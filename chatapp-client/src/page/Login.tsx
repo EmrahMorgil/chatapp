@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem("token", response.token);
         setTimeout(()=>{
           window.location.href = `${process.env.REACT_APP_BASE_URL}`;
-        }, 1500);
+        }, 1000);
       } else {
         toast.warning("Hatalı giriş");
       }
