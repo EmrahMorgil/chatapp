@@ -14,7 +14,7 @@ const Login = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
 
-  const userControl = async () => {
+  const handleLogin = async () => {
     if (user.email !== "" && user.password !== "") {
       const newUser = new UserLoginDto();
       newUser.email = user.email;
@@ -51,7 +51,7 @@ const Login = () => {
 
         </div>
 
-        <button type="button" className="btn btn-primary btn-block mb-4" onClick={userControl}>
+        <button type="button" className="btn btn-primary btn-block mb-4" onClick={handleLogin}>
           Sign in
         </button>
         <div className="text-center">
