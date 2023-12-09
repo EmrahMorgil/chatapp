@@ -95,7 +95,34 @@ const Home = () => {
         });
 
         setUsers(response.body);
-        setLoadingScreen(false);
+
+        // Kullanıcı giriş yaptığı zaman listelenen kullanıcılar ile oda oluşturulup o odayı websocket dinler. 
+        // Yeni bir kullanıcı katıldığı zaman fonksiyona tekrar girer ve yeni gelen kullanıcı ile birlikte tüm kullanıcılar ile
+        // odalar güncellenir.
+        if(!userConnect.message?.includes("disconnect") && userConnect.message?.includes(activeUser.name!)){
+
+          setTimeout(() => {
+            
+            var users = response.body;
+            var Rooms: string[] = [];
+            
+            users.forEach((u: UserViewDto) => {
+              if(activeUser && activeUser.id && u.id !== activeUser.id){
+                var oneRoom = u.id+activeUser.id;
+                var twoRoom = activeUser.id+u.id;
+                var setRoom = [oneRoom, twoRoom];
+                setRoom.sort();
+                Rooms.push(setRoom[0]);
+              }
+            });
+            
+            Rooms.forEach((room: string) => {
+              newConnection?.invoke("JoinRoom", room);
+            });
+            
+            setLoadingScreen(false);
+          }, 1000);
+        }
     });
 
     
@@ -132,7 +159,6 @@ const Home = () => {
     if (activeUser && dynamicId && token) {
       let response = await getMessages(message, token);
       if (response.success) {
-        connection?.invoke("JoinRoom", response.body.room);
         setMessages(response.body.messages);
         localStorage.setItem("room", response.body.room);
       }
