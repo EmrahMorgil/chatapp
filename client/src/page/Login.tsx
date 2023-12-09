@@ -23,14 +23,14 @@ const Login = () => {
       const response = await userLogin(newUser);
       if (response.success) {
         setLoadingScreen(false);
-        toast.success("Giriş Başarılı!");
+        toast.success("Login successful!");
         localStorage.setItem("activeUser", JSON.stringify(response.body));
         localStorage.setItem("token", response.token);
         setTimeout(()=>{
           window.location.href = `${process.env.REACT_APP_BASE_URL}`;
         }, 1000);
       } else {
-        toast.warning("Hatalı giriş");
+        toast.warning("Incorrect entry");
       }
       setLoadingScreen(false);
     }else{
@@ -42,6 +42,7 @@ const Login = () => {
   return (
     <div className={`d-flex justify-content-center align-items-center ${loadingScreen && "loading-screen-active"}`} style={{ marginTop: "15rem" }}>
       <form style={{ width: "300px" }}>
+        <h1 className="text-center mb-5 header-gradient">Login</h1>
         <div className="form-outline mb-4">
           <input type="email" name="email" className="form-control" onChange={handleChange} />
 

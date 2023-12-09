@@ -6,6 +6,13 @@ body{
     background-attachment: fixed;
 }
 
+.header-gradient{
+  background: linear-gradient(to right, white, black);
+  -webkit-background-clip: text; 
+  color: transparent;
+  height: 50px;
+}
+
 .activeUser {
     background-color: #2A3942;
 }

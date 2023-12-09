@@ -25,20 +25,20 @@ const Register = () => {
       const response = await userRegister(newUser);
       if (response.success) {
         setLoadingScreen(false);
-        toast.success("Kayıt Başarılı !");
+        toast.success("Registration successful!");
         localStorage.setItem("activeUser", JSON.stringify(response.body));
         localStorage.setItem("token", response.token);
         setTimeout(()=>{
           window.location.href = `${process.env.REACT_APP_BASE_URL}`;
         }, 1000);
       } else {
-        toast.warning("Bu email kullanılıyor!");
+        toast.warning("This email is being used!");
       }
     }else if(!validateEmail(user.email)){
-      toast.warning("Geçersiz email girişi!");
+      toast.warning("Invalid email entry!");
     } 
     else {
-      toast.warning("Tüm veri girişlerini yapınız!");
+      toast.warning("All fields must be filled!");
     }
     setLoadingScreen(false);
 
@@ -50,7 +50,8 @@ const Register = () => {
   };
 
   return (
-    <div className={`d-flex flex-column justify-content-center align-items-center ${loadingScreen && "loading-screen-active"}`} style={{ marginTop: "15rem" }}>
+    <div className={`d-flex flex-column justify-content-center align-items-center ${loadingScreen && "loading-screen-active"}`} style={{ marginTop: "10rem" }}>
+      <h1 className="text-center mb-5 header-gradient">Register</h1>
       <img src={user.image} style={{width: "120px", height: "120px", borderRadius: "50%", marginBottom: "2rem", border: "1px solid grey"}} />
       <form style={{ width: "300px" }} encType="multipart/form-data">
         <div className="form-outline mb-4">
