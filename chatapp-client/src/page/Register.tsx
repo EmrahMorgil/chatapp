@@ -65,11 +65,13 @@ const Register = () => {
         <div className="form-outline mb-4">
           <input type="text" name="image" className='form-control' placeholder="Image" onChange={handleChange} />
         </div>
-        <div className='d-flex gap-3 '>
+        <div className='d-flex gap-3 justify-content-center align-items-center'>
 
-          <button type='button' className='btn btn-primary' onClick={() => window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`}>
-            Sign In
-          </button>
+          <p style={{color: "white", marginBottom: "0px"}}>
+            I have an account <a href="/login">Login</a>
+          </p>
+
+          
           <button type="button" className="btn btn-warning " onClick={addNewUser}>
             Sign Up
           </button>
