@@ -12,6 +12,5 @@
     "ValidIssuer": "http://morfit.com",
     "ValidAudience": "http://morfit.com",
     "ValidityPeriod": 1
-    // 1 gun gecerli token
   }
 }
