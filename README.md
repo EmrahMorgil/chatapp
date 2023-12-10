@@ -1,5 +1,7 @@
 Fullstack Realtime Chatapp
 
+URL: https://message-app123.vercel.app/
+
 Client: React-Typescript, Microsoft SignalR
 
 Server: Onion Architecture, Dapper, Jwt, SignalR, Fluent Migrator, AutoMapper, BCrypt, MediatR
