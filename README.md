@@ -1,6 +1,7 @@
 Fullstack Realtime Chatapp
 
 Client: React-Typescript, Microsoft SignalR
+
 Server: Onion Architecture, Dapper, Jwt, SignalR, Fluent Migrator, AutoMapper, BCrypt, MediatR
 
 
