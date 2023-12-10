@@ -19,6 +19,3 @@ export const addMessage = async (message: MessageDto, token: string) => {
         HandleLogout();
     }
 }
-
-
-
