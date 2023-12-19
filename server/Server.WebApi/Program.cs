@@ -67,7 +67,7 @@ app.UseCors();
 //------
 
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection(); //kaldýrýlacak
 
 //JWT
 app.UseAuthentication();
