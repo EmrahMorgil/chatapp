@@ -1,6 +1,6 @@
 Fullstack Realtime Chatapp
 
-URL: https://message-app123.vercel.app/
+URL: https://emrahmorgil.com
 
 Client: React-Typescript, Microsoft SignalR
 
