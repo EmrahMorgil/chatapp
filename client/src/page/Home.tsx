@@ -82,11 +82,11 @@ const Home = () => {
     newConnection.on("ReceiveMessage", (message: mdlMessageDto) => {
       if (message.senderId !== activeUser.id) {
         getmessage.play();
-        if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
-          sendNotification(message.senderName!, message.content!, getUserImage(""));
-          document.getElementById(message.senderId!)?.classList.remove("d-none");
-          document.getElementById("u" + message.senderId!)?.classList.add("d-none");
-        }
+        // if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
+        sendNotification(message.senderName!, message.content!, getUserImage(""));
+        document.getElementById(message.senderId!)?.classList.remove("d-none");
+        document.getElementById("u" + message.senderId!)?.classList.add("d-none");
+        // }
       }
       else
         sendtomessage.play();
