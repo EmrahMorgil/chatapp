@@ -14,6 +14,7 @@ import MessageService from "../utils/MessageService";
 import mdlListUserRequest from "../core/models/service-models/user/ListUserRequest";
 import mdlMessageDto from "../core/dto/MessageDto";
 import CookieManager from "../components/helpers/CookieManager";
+import getUserImage from "../components/helpers/ImageHelper";
 
 const Home = () => {
   const getmessage = new Audio("../../sounds/getmessage.wav");
@@ -28,10 +29,12 @@ const Home = () => {
   const [loadingScreen, setLoadingScreen] = React.useState(false);
   const activeUser: mdlUser = JSON.parse(CookieManager.getCookie("activeUser")!);
 
+
   React.useEffect(() => {
 
-    if (!connection)
-      fnGetConnection();
+    if (!connection) {
+      fnRegisterNotification();
+    }
 
     if (pageOnReload) {
       sessionStorage.removeItem("takerUser");
@@ -41,12 +44,36 @@ const Home = () => {
   }, []);
 
 
-  const fnGetConnection = () => {
+  const sendNotification = (pTitle: string, pBody: string, pIcon: string) => {
+    const title = pTitle;
+    const options = {
+      body: pBody,
+      icon: pIcon,
+    };
 
+    navigator.serviceWorker.ready.then(function (registration) {
+      registration.showNotification(title, options);
+    });
+  }
+
+  const fnRegisterNotification = () => {
     setLoadingScreen(true);
 
+    Notification.requestPermission().then(function (permission) {
+      if (permission === 'granted') {
+        fnGetConnection();
+        navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+        });
+      } else {
+        toast.error("Please allow notifications");
+      }
+    });
+  }
+
+  const fnGetConnection = () => {
+
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${process.env.REACT_APP_SERVER_URI}/api/chat-hub?username=${activeUser.name}&userid=${activeUser.id}`)
+      .withUrl(`${process.env.REACT_APP_SERVER_URI}/api/chat-hub?username=${activeUser.name}&userid=${activeUser.id}&image=${activeUser.image}`)
       .withAutomaticReconnect()
       .build();
 
@@ -56,7 +83,7 @@ const Home = () => {
       if (message.senderId !== activeUser.id) {
         getmessage.play();
         if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
-          toast.success(`${message.senderName}: ${message.content}`);
+          sendNotification(message.senderName!, message.content!, getUserImage(""));
           document.getElementById(message.senderId!)?.classList.remove("d-none");
           document.getElementById("u" + message.senderId!)?.classList.add("d-none");
         }
@@ -69,8 +96,8 @@ const Home = () => {
     });
 
     newConnection.on("UserConnection", async (onlineUsers: mdlOnlineUsers) => {
-      if (onlineUsers.message?.includes("join") && onlineUsers.lastUserId !== activeUser.id) {
-        toast.success(onlineUsers.message);
+      if (onlineUsers.status?.includes("connect") && onlineUsers.lastUserId !== activeUser.id) {
+        sendNotification(onlineUsers.userName!, "Joined from server", getUserImage(onlineUsers.image));
         joinroom.play();
 
         var Rooms: string[] = [];
@@ -84,8 +111,8 @@ const Home = () => {
         Rooms.forEach((room: string) => {
           newConnection?.invoke("JoinRoom", room);
         });
-      } else if (onlineUsers.message?.includes("disconnect")) {
-        toast.error(onlineUsers.message);
+      } else if (onlineUsers.status?.includes("disconnect")) {
+        sendNotification(onlineUsers.userName!, "Leaved from server", getUserImage(onlineUsers.image));
         leaveroom.play();
       }
 
