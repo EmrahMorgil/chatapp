@@ -1,7 +1,7 @@
 
 const getUserImage = (image?: string) => {
   return (
-    process.env.REACT_APP_SERVER_URI + `/images/users/${image}`
+    process.env.REACT_APP_API_URI + `/images/users/${image}`
   )
 }
 

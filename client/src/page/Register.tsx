@@ -43,7 +43,7 @@ const Register = () => {
           toast.success(response.message);
           CookieManager.setCookie("token", response.token, 1);
           CookieManager.setCookie("activeUser", JSON.stringify(response.body), 1);
-          window.location.href = `${process.env.REACT_APP_BASE_URL}`;
+          window.location.href = window.location.origin;
         } else {
           toast.warning(response.message);
         }

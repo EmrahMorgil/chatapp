@@ -73,7 +73,7 @@ const Home = () => {
   const fnGetConnection = () => {
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${process.env.REACT_APP_SERVER_URI}/api/chat-hub?username=${activeUser.name}&userid=${activeUser.id}&image=${activeUser.image}`)
+      .withUrl(`${process.env.REACT_APP_API_URI}/api/chat-hub?username=${activeUser.name}&userid=${activeUser.id}&image=${activeUser.image}`)
       .withAutomaticReconnect()
       .build();
 
@@ -82,11 +82,12 @@ const Home = () => {
     newConnection.on("ReceiveMessage", (message: mdlMessageDto) => {
       if (message.senderId !== activeUser.id) {
         getmessage.play();
-        // if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
         sendNotification(message.senderName!, message.content!, getUserImage(""));
-        document.getElementById(message.senderId!)?.classList.remove("d-none");
-        document.getElementById("u" + message.senderId!)?.classList.add("d-none");
-        // }
+        if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
+          // unread message için sarı bildirim
+          document.getElementById(message.senderId!)?.classList.remove("d-none");
+          document.getElementById("u" + message.senderId!)?.classList.add("d-none");
+        }
       }
       else
         sendtomessage.play();

@@ -8,7 +8,7 @@ interface IProtected {
 const Protected: React.FC<IProtected> = ({ loggedIn, children }) => {
 
     const redirect = () => {
-        window.location.href = `${process.env.REACT_APP_BASE_URL + "/login"}`;
+        window.location.href = window.location.origin + "/login";
     }
 
     if (!loggedIn) {
