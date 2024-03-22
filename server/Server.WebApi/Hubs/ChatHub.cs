@@ -26,7 +26,7 @@ namespace Server.WebApi.Hubs
             onlineUsers.UsersIds = activeUserIds;
             onlineUsers.Image = image;
             onlineUsers.LastUserId = id;
-            onlineUsers.Status = "connect";
+            onlineUsers.Status = "join";
 
             await Clients.All.SendAsync("UserConnection", onlineUsers);
         }
@@ -42,7 +42,7 @@ namespace Server.WebApi.Hubs
             onlineUsers.UserName = username;
             onlineUsers.UsersIds = activeUserIds;
             onlineUsers.Image = image;
-            onlineUsers.Status = "disconnect";
+            onlineUsers.Status = "leave";
 
             await Clients.Others.SendAsync("UserConnection", onlineUsers);
         }

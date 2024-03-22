@@ -15,12 +15,22 @@ import mdlListUserRequest from "../core/models/service-models/user/ListUserReque
 import mdlMessageDto from "../core/dto/MessageDto";
 import CookieManager from "../components/helpers/CookieManager";
 import getUserImage from "../components/helpers/ImageHelper";
+import _, { find } from "lodash";
+
+enum enmSoundType {
+  get = 1,
+  send = 2,
+  join = 3,
+  leave = 4
+}
 
 const Home = () => {
-  const getmessage = new Audio("../../sounds/getmessage.wav");
-  const sendtomessage = new Audio("../../sounds/sendtomessage.wav");
-  const joinroom = new Audio("../../sounds/joinroom.wav");
-  const leaveroom = new Audio("../../sounds/leaveroom.wav");
+  const sounds = [{ type: enmSoundType.get, sound: new Audio("../../sounds/getmessage.wav") }, { type: enmSoundType.send, sound: new Audio("../../sounds/sendtomessage.wav") },
+  { type: enmSoundType.join, sound: new Audio("../../sounds/joinroom.wav") }, { type: enmSoundType.leave, sound: new Audio("../../sounds/leaveroom.wav") }];
+
+  _.each(sounds, s => {
+    s.sound.muted = false;
+  });
 
   const [connection, setConnection] = React.useState<signalR.HubConnection | null>(null);
   const [messages, setMessages] = React.useState<mdlMessageDto[]>([]);
@@ -43,6 +53,17 @@ const Home = () => {
     }
   }, []);
 
+  const playAudio = (soundType: enmSoundType) => {
+    sounds.find((s) => s.type == soundType)?.sound.play();
+  }
+
+  const resetAudio = () => {
+    _.each(sounds, s => {
+      s.sound.pause();
+      s.sound.currentTime = 0;
+      s.sound.muted = true;
+    });
+  }
 
   const sendNotification = (pTitle: string, pBody: string, pIcon: string) => {
     const title = pTitle;
@@ -80,26 +101,29 @@ const Home = () => {
     setConnection(newConnection);
 
     newConnection.on("ReceiveMessage", (message: mdlMessageDto) => {
-      if (message.senderId !== activeUser.id) {
-        getmessage.play();
-        sendNotification(message.senderName!, message.content!, getUserImage(""));
+      if (message.senderUser?.id !== activeUser.id) {
+        playAudio(enmSoundType.get);
+        // getmessage.play();
+        sendNotification(message.senderUser?.name!, message.content!, getUserImage(message.senderUser?.image));
         if (sessionStorage.getItem("room") == null || sessionStorage.getItem("room") !== message.room) {
           // unread message için sarı bildirim
-          document.getElementById(message.senderId!)?.classList.remove("d-none");
-          document.getElementById("u" + message.senderId!)?.classList.add("d-none");
+          document.getElementById(message.senderUser?.id!)?.classList.remove("d-none");
+          // document.getElementById("u" + message.senderId!)?.classList.add("d-none");
         }
       }
-      else
-        sendtomessage.play();
-
+      else {
+        playAudio(enmSoundType.send);
+      }
       if (message.room === sessionStorage.getItem("room"))
         setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     newConnection.on("UserConnection", async (onlineUsers: mdlOnlineUsers) => {
-      if (onlineUsers.status?.includes("connect") && onlineUsers.lastUserId !== activeUser.id) {
-        sendNotification(onlineUsers.userName!, "Joined from server", getUserImage(onlineUsers.image));
-        joinroom.play();
+      if (onlineUsers.status?.includes("join")) {
+        if (onlineUsers.lastUserId !== activeUser.id) {
+          sendNotification(onlineUsers.userName!, "Joined from server", getUserImage(onlineUsers.image));
+          playAudio(enmSoundType.join);
+        }
 
         var Rooms: string[] = [];
         onlineUsers.usersIds?.forEach((u: string) => {
@@ -112,9 +136,9 @@ const Home = () => {
         Rooms.forEach((room: string) => {
           newConnection?.invoke("JoinRoom", room);
         });
-      } else if (onlineUsers.status?.includes("disconnect")) {
+      } else if (onlineUsers.status?.includes("leave")) {
         sendNotification(onlineUsers.userName!, "Leaved from server", getUserImage(onlineUsers.image));
-        leaveroom.play();
+        playAudio(enmSoundType.leave);
       }
 
       await getUsers(onlineUsers);

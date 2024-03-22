@@ -1,8 +1,9 @@
+import mdlUserDto from "./UserDto";
+
 export default class mdlMessageDto {
     id?: string;
     createdDate?: string;
-    senderId?: string;
-    senderName?: string;
+    senderUser?: mdlUserDto;
     content?: string;
     room?: string;
 }

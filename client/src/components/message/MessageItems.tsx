@@ -16,7 +16,7 @@ const MessageItems: React.FC<mdlMessageItemProps> = (props) => {
   return (
     <div className="d-flex flex-column m-1">
       {
-        <div className={`${props.message?.senderId === activeUser.id ? "align-self-end" : "align-self-start"}`} style={{ backgroundColor: "#202C33", padding: "1rem", borderRadius: "10%" }}>
+        <div className={`${props.message?.senderUser?.id === activeUser.id ? "align-self-end" : "align-self-start"}`} style={{ backgroundColor: "#202C33", padding: "1rem", borderRadius: "10%" }}>
           <span style={{ marginRight: "9px", whiteSpace: "pre-wrap" }}>
             {props.message?.content?.length! > 50
               ? props.message?.content?.match(/.{1,50}/g)!.map((m, index) => (

@@ -34,7 +34,7 @@ namespace Server.Application.Features.Message.Commands
                 var message = _mapper.Map<Domain.Entities.Message>(request);
                 var messageDto = _mapper.Map<MessageDto>(message);
                 var user = await _userRepository.GetById(request.SenderId);
-                messageDto.SenderName = user.Name;
+                messageDto.SenderUser = _mapper.Map<UserDto>(user);
 
                 return new BaseDataResponse<MessageDto>(messageDto, await _messageRepository.Create(message), ResponseMessages.Success);
             }
