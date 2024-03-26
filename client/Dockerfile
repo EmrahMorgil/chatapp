@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-ENV REACT_APP_API_URI=http://api.emrahmorgil.com
+ENV REACT_APP_API_URI=https://api.emrahmorgil.com
 
 RUN npm install
 
