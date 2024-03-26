@@ -15,22 +15,10 @@ import mdlListUserRequest from "../core/models/service-models/user/ListUserReque
 import mdlMessageDto from "../core/dto/MessageDto";
 import CookieManager from "../components/helpers/CookieManager";
 import getUserImage from "../components/helpers/ImageHelper";
-import _, { find } from "lodash";
-
-enum enmSoundType {
-  get = 1,
-  send = 2,
-  join = 3,
-  leave = 4
-}
+import sounds from "../components/data/Sounds";
+import { enmSoundType } from "../core/enums/SoundType";
 
 const Home = () => {
-  const sounds = [{ type: enmSoundType.get, sound: new Audio("../../sounds/getmessage.wav") }, { type: enmSoundType.send, sound: new Audio("../../sounds/sendtomessage.wav") },
-  { type: enmSoundType.join, sound: new Audio("../../sounds/joinroom.wav") }, { type: enmSoundType.leave, sound: new Audio("../../sounds/leaveroom.wav") }];
-
-  _.each(sounds, s => {
-    s.sound.muted = false;
-  });
 
   const [connection, setConnection] = React.useState<signalR.HubConnection | null>(null);
   const [messages, setMessages] = React.useState<mdlMessageDto[]>([]);
@@ -43,6 +31,11 @@ const Home = () => {
   React.useEffect(() => {
 
     if (!connection) {
+
+      sounds.forEach(s => {
+        s.sound.muted = false;
+      });
+
       fnRegisterNotification();
     }
 
@@ -54,11 +47,13 @@ const Home = () => {
   }, []);
 
   const playAudio = (soundType: enmSoundType) => {
-    sounds.find((s) => s.type == soundType)?.sound.play();
+    sounds.find((s) => s.type == soundType)?.sound.play().catch((err) => {
+      resetAudio();
+    });
   }
 
   const resetAudio = () => {
-    _.each(sounds, s => {
+    sounds.forEach(s => {
       s.sound.pause();
       s.sound.currentTime = 0;
       s.sound.muted = true;
@@ -67,7 +62,7 @@ const Home = () => {
 
   const sendNotification = (pTitle: string, pBody: string, pIcon: string) => {
     const title = pTitle;
-    const options = {
+    const options: NotificationOptions = {
       body: pBody,
       icon: pIcon,
     };
@@ -75,16 +70,16 @@ const Home = () => {
     navigator.serviceWorker.ready.then(function (registration) {
       registration.showNotification(title, options);
     });
+
   }
 
   const fnRegisterNotification = () => {
     setLoadingScreen(true);
 
     Notification.requestPermission().then(function (permission) {
+      // bildirimler kapalı olduğu durumda siteye erişim olmaz
       if (permission === 'granted') {
         fnGetConnection();
-        navigator.serviceWorker.register('service-worker.js').then(function (registration) {
-        });
       } else {
         toast.error("Please allow notifications");
       }
