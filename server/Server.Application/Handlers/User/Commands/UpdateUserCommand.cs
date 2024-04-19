@@ -63,7 +63,7 @@ namespace Server.Application.Handlers.User.Commands
                         updateUser.Name = request.Name;
                         updateUser.Password = Encryption.EncryptPassword(password);
                         updateUser.Image = request.Image;
-                    return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Email), ResponseMessages.Success);
+                    return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Id), ResponseMessages.Success);
                 }
                 else
                 {

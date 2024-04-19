@@ -17,6 +17,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var settings = builder.Configuration.GetSection("TokenInfo").Get<Settings>();
 
+//Http isteginde gonderilen header'a ulasmak ıcın eklendi.
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 //Registiration
 //builder.Services.AddFluentValidationAutoValidation();   bu fluentvalidation un default ayarları
 

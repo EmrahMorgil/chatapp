@@ -37,7 +37,7 @@ namespace Server.Application.Features.User.Queries
                 {
                     if(Encryption.VerifyPassword(request.Password, user.Password))
                     {
-                        return new AuthenticationResponse(user, true, JwtService.GenerateToken(user.Email), ResponseMessages.Success);
+                        return new AuthenticationResponse(user, true, JwtService.GenerateToken(user.Id), ResponseMessages.Success);
                     }
                     else
                     {

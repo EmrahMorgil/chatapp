@@ -35,7 +35,7 @@ namespace Server.Application.Features.User.Commands
                 {
                     var user = _mapper.Map<Domain.Entities.User>(request);
                     user.Password = Encryption.EncryptPassword(request.Password);
-                    return new AuthenticationResponse(user, await _userRepository.Create(user), JwtService.GenerateToken(user.Email), ResponseMessages.Success);
+                    return new AuthenticationResponse(user, await _userRepository.Create(user), JwtService.GenerateToken(user.Id), ResponseMessages.Success);
                 }
                 else
                 {
