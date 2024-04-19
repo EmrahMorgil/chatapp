@@ -37,6 +37,7 @@ const Home = () => {
       });
 
       fnRegisterNotification();
+      fnGetConnection();
     }
 
     if (pageOnReload) {
@@ -77,12 +78,8 @@ const Home = () => {
     setLoadingScreen(true);
 
     Notification.requestPermission().then(function (permission) {
-      // bildirimler kapalı olduğu durumda siteye erişim olmaz
-      if (permission === 'granted') {
-        fnGetConnection();
-      } else {
-        toast.error("Please allow notifications");
-      }
+      if (permission === 'denied')
+        toast.error("Please allow notifications and sounds");
     });
   }
 

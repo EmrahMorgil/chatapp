@@ -13,13 +13,10 @@ class mdlUserProps {
 const UserContainer: React.FC<mdlUserProps> = (props) => {
 
   return (
-    <div className='col-xl-3 col-md-3' style={{ margin: "0px", padding: "0px" }}>
-
-      <div className='d-none d-sm-block' style={{ height: "50rem", backgroundColor: "#111B21", padding: "0px", margin: "0px" }}>
+      <div className='col-xl-3 col-md-3' style={{ height: "50rem", backgroundColor: "#111B21", padding: "0px", margin: "0px" }}>
         <UserBar />
         <Users users={props.users} getMessages={props.getMessages} />
       </div>
-    </div>
   )
 }
 
