@@ -16,5 +16,6 @@ namespace Server.Application.Consts
         public static readonly string CannotBeEmpty = "Cannot Be Empty";
         public static readonly string ModelValidationFail = "An Error Occured While Request Model Validation";
         public static readonly string UnauthorizedEntry = "Unauthorized Entry";
+        public static readonly string InvalidImageType = "Invalid Image Type";
     }
 }

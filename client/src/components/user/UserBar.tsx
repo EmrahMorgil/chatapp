@@ -6,7 +6,6 @@ import mdlUser from '../../core/models/User';
 import UserService from '../../utils/UserService';
 import mdlUpdateUserRequest from '../../core/models/service-models/user/UpdateUserRequest';
 import CookieManager from '../helpers/CookieManager';
-import ImageValidationHelper from '../helpers/ImageValidationHelper';
 
 interface IUserBarProps {
   activeUser?: mdlUser;
@@ -15,22 +14,16 @@ interface IUserBarProps {
 const UserBar: React.FC<IUserBarProps> = (props) => {
 
   const [user, setUser] = React.useState<mdlUpdateUserRequest>();
-  const [uploadFile, setUploadFile] = React.useState<FormData>();
+  const [uploadFile, setUploadFile] = React.useState<File>();
   const [passwordChange, setPasswordChange] = React.useState(false);
 
   React.useEffect(()=>{
-    setUser(new mdlUpdateUserRequest(props.activeUser?.email, props.activeUser?.name, "", "", "", props.activeUser?.image));
+    setUser(new mdlUpdateUserRequest(props.activeUser?.email, props.activeUser?.name, "", "", "", getUserImage(props.activeUser?.image)));
   }, [props.activeUser]);
 
   const handleUpdate = async () => {
-    let image = props.activeUser?.image;
-    if (uploadFile) {
-      const uploadResponse = await UserService.UploadImage(uploadFile);
-      if(uploadResponse.success)
-        image = uploadResponse.body;
-    }
-    var token = CookieManager.getCookie("token");
-    var request = new mdlUpdateUserRequest(user?.email, user?.name, user?.oldPassword, user?.newPassword, user?.newPasswordVerify, image);
+    var prepareImage = uploadFile?.name + "," + user?.image;
+    var request = new mdlUpdateUserRequest(user?.email, user?.name, user?.oldPassword, user?.newPassword, user?.newPasswordVerify, prepareImage);
     var response = await UserService.Update(request);
     if (response.success && response.token) {
       toast.success(response.message);
@@ -44,21 +37,18 @@ const UserBar: React.FC<IUserBarProps> = (props) => {
   const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file: File = event.target.files![0];
 
-    if (file && ImageValidationHelper(file)) {
+    if (file) {
+      setUploadFile(file);
       const reader = new FileReader();
-      const formData = new FormData();
-      formData.append('image', file);
-      setUploadFile(formData);
       reader.onload = (e) => {
-        const previewImage: any = document.getElementById('bar-preview-image');
-        if (previewImage) {
-          previewImage.src = e.target?.result;
-        }
+        let result = e.target?.result as string;
+        setUser({ ...user, image: result });
       };
       reader.readAsDataURL(file);
-    } else
-      toast.warning("Invalid File Format");
-  }
+    }
+  };
+
+
 
   return (
     <div style={{ backgroundColor: "#202C33", height: "70px", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -87,7 +77,7 @@ const UserBar: React.FC<IUserBarProps> = (props) => {
               <div className="modal-body">
 
                 <div style={{ marginTop: "3vh" }} className='d-flex align-items-center flex-column gap-2'>
-                  <img id='bar-preview-image' style={{ width: "120px", height: "120px", borderRadius: "50%" }} src={getUserImage(user?.image)} />
+                  <img style={{ width: "120px", height: "120px", borderRadius: "50%" }} src={user?.image} />
                   <label>Name :</label>
                   <div>
                     <input onChange={(e) => setUser({ ...user, name: e.target.value })} className='form-control' value={user?.name} name='name' />

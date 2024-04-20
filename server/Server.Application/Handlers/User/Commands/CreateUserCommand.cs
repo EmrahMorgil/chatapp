@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
+using Server.Application.Services;
 using Server.Application.Wrappers;
 using Server.Persistence.Services;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Server.Application.Features.User.Commands
 {
@@ -29,22 +32,31 @@ namespace Server.Application.Features.User.Commands
 
             public async Task<AuthenticationResponse> Handle(CreateUserCommand request, CancellationToken cancellationToken)
             {
-                var userList = await _userRepository.List();
-                var existUser = userList.FirstOrDefault((u)=>u.Email == request.Email);
-                if (existUser == null)
+                var imageName = ImageUploader.UploadImage(request.Image);
+                if (imageName != null)
                 {
-                    var user = _mapper.Map<Domain.Entities.User>(request);
-                    user.Password = Encryption.EncryptPassword(request.Password);
-                    return new AuthenticationResponse(user, await _userRepository.Create(user), JwtService.GenerateToken(user.Id), ResponseMessages.Success);
+                    var userList = await _userRepository.List();
+                    var existUser = userList.FirstOrDefault((u) => u.Email == request.Email);
+                    if (existUser == null)
+                    {
+                        var user = _mapper.Map<Domain.Entities.User>(request);
+                        user.Image = imageName;
+                        user.Password = Encryption.EncryptPassword(request.Password);
+                        return new AuthenticationResponse(user, await _userRepository.Create(user), JwtService.GenerateToken(user.Id), ResponseMessages.Success);
+                    }
+                    else
+                    {
+                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.UserAlreadyExist);
+                    }
                 }
                 else
                 {
-                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.UserAlreadyExist);
+                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
                 }
+                
             }
         }
     }
-
     public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         public CreateUserCommandValidator()

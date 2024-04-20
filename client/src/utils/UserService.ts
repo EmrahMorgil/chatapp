@@ -9,7 +9,6 @@ import mdlLoginUserRequest from "../core/models/service-models/user/LoginUserReq
 import mdlLoginUserResponse from "../core/models/service-models/user/LoginUserResponse";
 import mdlUpdateUserRequest from "../core/models/service-models/user/UpdateUserRequest";
 import mdlUpdateUserResponse from "../core/models/service-models/user/UpdateUserResponse";
-import mdlUploadResponse from "../core/models/service-models/user/UploadResponse";
 import ApiClient from "./ApiClient";
 
 module UserService {
@@ -54,14 +53,6 @@ module UserService {
   ): Promise<mdlDetailUserResponse> => {
     const response = await ApiClient.PostAsync(servicePath() + "detail", req, {headers: { "Authorization": token}});
     var cResponse = response as mdlDetailUserResponse;
-    return cResponse;
-  };
-
-  export const UploadImage = async (
-    req: FormData
-  ): Promise<mdlUploadResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "uploadImage", req);
-    var cResponse = response as mdlUploadResponse;
     return cResponse;
   };
 }

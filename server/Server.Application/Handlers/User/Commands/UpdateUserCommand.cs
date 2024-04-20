@@ -6,6 +6,7 @@ using Server.Application.Consts;
 using Server.Application.Features.User.Commands;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
+using Server.Application.Services;
 using Server.Application.Wrappers;
 using Server.Domain.Entities;
 using Server.Persistence.Services;
@@ -36,6 +37,7 @@ namespace Server.Application.Handlers.User.Commands
 
             public async Task<AuthenticationResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
+                var imageName = ImageUploader.UploadImage(request.Image);
                 var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
                 var authUser = JwtService.DecodeToken(authorizationHeader);
                 var authId = authUser.Claims.First().Value;
@@ -55,19 +57,23 @@ namespace Server.Application.Handlers.User.Commands
                     }
 
                     if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.NewPasswordVerify))
-                        {
-                        if(request.NewPassword != request.NewPasswordVerify)
+                    {
+                        if (request.NewPassword != request.NewPasswordVerify)
                             return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordsDoNotMatch);
-                        if(request.NewPassword == request.OldPassword)
+                        if (request.NewPassword == request.OldPassword)
                             return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
-                        }
+                    }
+                    if (imageName == null)
+                    {
+                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
+                    }
 
                     var updateUser = new Domain.Entities.User();
-                        updateUser.Id = Guid.Parse(authId);
-                        updateUser.Email = request.Email;
-                        updateUser.Name = request.Name;
-                        updateUser.Password = Encryption.EncryptPassword(password);
-                        updateUser.Image = request.Image;
+                    updateUser.Id = Guid.Parse(authId);
+                    updateUser.Email = request.Email;
+                    updateUser.Name = request.Name;
+                    updateUser.Password = Encryption.EncryptPassword(password);
+                    updateUser.Image = imageName;
                     return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Id), ResponseMessages.Success);
                 }
                 else

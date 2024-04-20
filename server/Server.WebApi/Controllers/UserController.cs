@@ -52,28 +52,5 @@ namespace Server.WebApi.Controllers
         {
             return Ok(await _mediator.Send(user));
         }
-
-        [HttpPost("uploadImage")]
-        public ActionResult<BaseDataResponse<string>> UploadImage(IFormFile image)
-        {
-            string directory = Path.Combine("wwwroot", "images", "users");
-            string fileName = image.FileName.Replace(" ", "");
-            string imageName = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + "-" + fileName;
-
-            try
-            {
-                var filePath = Path.Combine(directory, imageName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    image.CopyTo(stream);
-                }
-                return new BaseDataResponse<string>(imageName, true, ResponseMessages.Success);
-            }
-            catch (Exception ex)
-            {
-                return new BaseDataResponse<string>(ex.Message, false, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
-            }
-        }
-
     }
 }
