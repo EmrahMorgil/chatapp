@@ -13,7 +13,6 @@ namespace Server.Application.Services
             string[] allowedExtensions = { "jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff", "svg", "webp", "ico", "psd", "heic", "heif" };
             string[] parts = image.Split(',');
             bool containsAllowedExtension = allowedExtensions.Any(extension => parts[0].Contains(extension));
-            byte[] imageBytes = Convert.FromBase64String(parts[2]);
             string imageName = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + parts[0];
             imageName = imageName.Replace(" ", "");
             string directory = Path.Combine("wwwroot", "images", "users", imageName);
@@ -22,6 +21,7 @@ namespace Server.Application.Services
             {
                 try
                 {
+                    byte[] imageBytes = Convert.FromBase64String(parts[2]);
                     File.WriteAllBytes(directory, imageBytes);
                     return imageName;
                 }

@@ -42,43 +42,49 @@ namespace Server.Application.Handlers.User.Commands
                 var authUser = JwtService.DecodeToken(authorizationHeader);
                 var authId = authUser.Claims.First().Value;
                 var user = await _userRepository.GetById(Guid.Parse(authId));
+                var userList = await _userRepository.List();
+                var filteredUsers = userList.Where(u => u.Id != user.Id).ToList();
                 var oldPasswordControl = Encryption.VerifyPassword(request.OldPassword, user.Password);
-                if (oldPasswordControl)
-                {
-                    string password;
+                var existUser = filteredUsers.FirstOrDefault((u) => u.Email == request.Email);
 
-                    if (String.IsNullOrEmpty(request.NewPassword))
+                if (existUser == null)
+                {
+                    if (oldPasswordControl)
                     {
-                        password = request.OldPassword;
+                        string password;
+
+                        if (String.IsNullOrEmpty(request.NewPassword))
+                        {
+                            password = request.OldPassword;
+                        }
+                        else
+                        {
+                            password = request.NewPassword;
+                        }
+
+                        if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.NewPasswordVerify))
+                        {
+                            if (request.NewPassword != request.NewPasswordVerify)
+                                return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordsDoNotMatch);
+                            if (request.NewPassword == request.OldPassword)
+                                return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
+                        }
+                        var updateUser = new Domain.Entities.User();
+                        updateUser.Id = Guid.Parse(authId);
+                        updateUser.Email = request.Email;
+                        updateUser.Name = request.Name;
+                        updateUser.Password = Encryption.EncryptPassword(password);
+                        updateUser.Image = imageName != null ? imageName : user.Image;
+                        return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Id), ResponseMessages.Success);
                     }
                     else
                     {
-                        password = request.NewPassword;
+                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.IncorrectOldPasswordEntry);
                     }
-
-                    if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.NewPasswordVerify))
-                    {
-                        if (request.NewPassword != request.NewPasswordVerify)
-                            return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordsDoNotMatch);
-                        if (request.NewPassword == request.OldPassword)
-                            return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
-                    }
-                    if (imageName == null)
-                    {
-                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
-                    }
-
-                    var updateUser = new Domain.Entities.User();
-                    updateUser.Id = Guid.Parse(authId);
-                    updateUser.Email = request.Email;
-                    updateUser.Name = request.Name;
-                    updateUser.Password = Encryption.EncryptPassword(password);
-                    updateUser.Image = imageName;
-                    return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Id), ResponseMessages.Success);
                 }
                 else
                 {
-                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.IncorrectOldPasswordEntry);
+                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.ThisEmailIsBeingUsed);
                 }
             }
         }

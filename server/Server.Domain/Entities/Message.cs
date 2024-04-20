@@ -11,7 +11,7 @@ namespace Server.Domain.Entities
 {
     public class Message: BaseEntity
     {
-        [Column("sender_id")]
+        [Column("senderId")]
         public Guid SenderId { get; set; }
         [Column("content")]
         public string Content { get; set; } = null!;

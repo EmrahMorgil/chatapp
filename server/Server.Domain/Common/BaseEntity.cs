@@ -11,7 +11,7 @@ namespace Server.Domain.Common
     {
         [Column("id")]
         public Guid Id { get; set; } = Guid.NewGuid();
-        [Column("created_date")]
+        [Column("createdDate")]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }

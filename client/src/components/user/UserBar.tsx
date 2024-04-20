@@ -22,9 +22,15 @@ const UserBar: React.FC<IUserBarProps> = (props) => {
   }, [props.activeUser]);
 
   const handleUpdate = async () => {
-    var prepareImage = uploadFile?.name + "," + user?.image;
+    if(passwordChange && (!user?.newPassword || !user?.newPasswordVerify)){
+      toast.warning("Password cannot be empty");
+    }else{
+    let prepareImage = user?.image;
+    if(uploadFile?.name)
+      prepareImage = uploadFile?.name + "," + prepareImage;
     var request = new mdlUpdateUserRequest(user?.email, user?.name, user?.oldPassword, user?.newPassword, user?.newPasswordVerify, prepareImage);
     var response = await UserService.Update(request);
+    
     if (response.success && response.token) {
       toast.success(response.message);
       CookieManager.setCookie("token", response.token, 1);
@@ -32,6 +38,7 @@ const UserBar: React.FC<IUserBarProps> = (props) => {
     } else {
       toast.warning(response.message);
     }
+  }
   }
 
   const uploadImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
