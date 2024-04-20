@@ -1,11 +1,10 @@
-FROM node:14 
+# Base image
+FROM nginx:alpine
 
-WORKDIR /app
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY . .
+COPY build /usr/share/nginx/html
 
-ENV REACT_APP_API_URI=https://chatapp-api.emrahmorgil.com
+EXPOSE 80
 
-RUN npm install
-
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
