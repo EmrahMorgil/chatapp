@@ -1,9 +1,7 @@
 export default class mdlCreateMessageRequest {
-    senderId: string;
     content: string;
     room: string;
-    constructor(pSenderId: string, pContent: string, pRoom: string) {
-        this.senderId = pSenderId;
+    constructor(pContent: string, pRoom: string) {
         this.content = pContent;
         this.room = pRoom;
     }

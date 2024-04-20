@@ -3,12 +3,13 @@ import MessageItems from "./MessageItems";
 import mdlUser from "../../core/models/User";
 import mdlMessageDto from "../../core/dto/MessageDto";
 
-interface MessagesProps {
+interface IMessagesProps {
   messages?: mdlMessageDto[];
   scrollToBottom?: Function;
+  activeUser?: mdlUser;
 }
 
-const Messages: React.FC<MessagesProps> = (props) => {
+const Messages: React.FC<IMessagesProps> = (props) => {
 
   const takerUser: mdlUser = JSON.parse(sessionStorage.getItem("takerUser")!);
 
@@ -27,7 +28,7 @@ const Messages: React.FC<MessagesProps> = (props) => {
   return (
     <div id="messages-container" className="message-scroll p-4 custom-heigth message-background" style={{ color: "white" }}>
       {props.messages?.map((i: mdlMessageDto, key) => {
-        return <MessageItems message={i} key={key} />;
+        return <MessageItems message={i} key={key} activeUser={props.activeUser}/>;
       })}
     </div>
   );

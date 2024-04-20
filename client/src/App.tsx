@@ -9,12 +9,12 @@ import CookieManager from './components/helpers/CookieManager';
 
 function App() {
 
-  var activeUser = CookieManager.getCookie("activeUser");
+  var token = CookieManager.getCookie("token");
 
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Protected loggedIn={activeUser ? true : false}><Home /></Protected>} />
+        <Route path="/" element={<Protected loggedIn={token ? true : false}><Home /></Protected>} />
         <Route path="/login" element={<Login />} />
         <Route path='/register' element={<Register />} />
       </Routes>

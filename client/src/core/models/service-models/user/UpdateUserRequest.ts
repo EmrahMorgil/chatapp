@@ -1,5 +1,4 @@
 export default class mdlUpdateUserRequest {
-    id?: string;
     email?: string;
     name?: string;
     oldPassword?: string;
@@ -7,8 +6,7 @@ export default class mdlUpdateUserRequest {
     newPasswordVerify?: string;
     image?: string;
 
-    constructor(pId: string = '', pEmail: string = '', pName: string = '', pOldPassword: string = '', pNewPassword: string = '', pNewPasswordVerify: string = '', pImage: string = '') {
-        this.id = pId;
+    constructor(pEmail: string = '', pName: string = '', pOldPassword: string = '', pNewPassword: string = '', pNewPasswordVerify: string = '', pImage: string = '') {
         this.email = pEmail;
         this.name = pName;
         this.oldPassword = pOldPassword;

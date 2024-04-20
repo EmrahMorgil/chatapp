@@ -4,11 +4,11 @@ import mdlCreateMessageRequest from "../../core/models/service-models/message/Cr
 import MessageService from "../../utils/MessageService";
 import CookieManager from "../helpers/CookieManager";
 
-interface MessageInputProps {
+interface IMessageInputProps {
   scrollToBottom?: Function;
 }
 
-const MessageInput: React.FC<MessageInputProps> = (props) => {
+const MessageInput: React.FC<IMessageInputProps> = (props) => {
 
   const [inputValue, setInputValue] = React.useState<string>("");
   const takerUser: mdlUser = JSON.parse(sessionStorage.getItem("takerUser")!);
@@ -18,13 +18,11 @@ const MessageInput: React.FC<MessageInputProps> = (props) => {
     var token = CookieManager.getCookie("token");
 
     if (inputValue.trim() !== "" && token) {
-      var activeUser = CookieManager.getCookie("activeUser");
       var room = sessionStorage.getItem("room");
-      var activeUserParse: mdlUser = activeUser ? JSON.parse(activeUser) : null;
 
-      let newMessage = new mdlCreateMessageRequest(activeUserParse.id!, inputValue, room!);
+      let newMessage = new mdlCreateMessageRequest(inputValue, room!);
       setInputValue("");
-      await MessageService.Create(newMessage, token);
+      await MessageService.Create(newMessage);
       props.scrollToBottom!();
     } else {
       setInputValue("");

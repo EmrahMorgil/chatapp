@@ -2,12 +2,12 @@ import React from "react";
 import getUserImage from "../helpers/ImageHelper";
 import mdlUserDto from "../../core/dto/UserDto";
 
-class mdlUserItemsProps {
+interface IUserItemsProps {
   item?: mdlUserDto;
   getMessages?: Function;
 }
 
-const UserItems: React.FC<mdlUserItemsProps> = (props) => {
+const UserItems: React.FC<IUserItemsProps> = (props) => {
 
   const fnGetMessages = (user: mdlUserDto) => {
 

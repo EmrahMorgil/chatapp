@@ -2,12 +2,12 @@ import React from 'react'
 import UserItems from './UserItems';
 import mdlUserDto from '../../core/dto/UserDto';
 
-class mdlUsersProps {
+interface IUserProps {
   users?: mdlUserDto[];
   getMessages?: Function;
 }
 
-const Users: React.FC<mdlUsersProps> = (props) => {
+const Users: React.FC<IUserProps> = (props) => {
 
   return (
     <div className='user-scroll' style={{ height: "730px", paddingTop: "1rem" }}>

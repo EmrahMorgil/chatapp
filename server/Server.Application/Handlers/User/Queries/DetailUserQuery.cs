@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Dto;
 using Server.Application.Handlers.User.Commands;
@@ -17,34 +18,37 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.User.Queries
 {
-    public class DetailUserQuery : IRequest<BaseDataResponse<UserDto>>
+    public class DetailUserQuery : IRequest<BaseDataResponse<Domain.Entities.User>>
     {
-        public Guid Id { get; set; }
-
-        public class DetailUserQueryHandler : IRequestHandler<DetailUserQuery, BaseDataResponse<UserDto>>
+        public class DetailUserQueryHandler : IRequestHandler<DetailUserQuery, BaseDataResponse<Domain.Entities.User>>
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public DetailUserQueryHandler(IUserRepository userRepository, IMapper mapper)
+            public DetailUserQueryHandler(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _httpContextAccessor = httpContextAccessor;
             }
 
-            public async Task<BaseDataResponse<UserDto>> Handle(DetailUserQuery request, CancellationToken cancellationToken)
+            public async Task<BaseDataResponse<Domain.Entities.User>> Handle(DetailUserQuery request, CancellationToken cancellationToken)
             {
-                var user = await _userRepository.GetById(request.Id);
-                var userDto = _mapper.Map<UserDto>(user);
-                return new BaseDataResponse<UserDto>(userDto, true, ResponseMessages.Success);
+                var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var authUser = JwtService.DecodeToken(authorizationHeader);
+                var authId = authUser.Claims.First().Value;
+
+                if (authId != null)
+                {
+                    var user = await _userRepository.GetById(Guid.Parse(authId));
+                    return new BaseDataResponse<Domain.Entities.User>(user, true, ResponseMessages.Success);
+                }
+                else
+                {
+                    return new BaseDataResponse<Domain.Entities.User>(null!, false, ResponseMessages.UnauthorizedEntry);
+                }
             }
-        }
-    }
-    public class DetailUserQueryValidator : AbstractValidator<DetailUserQuery>
-    {
-        public DetailUserQueryValidator()
-        {
-            RuleFor(entity => entity.Id).NotEmpty().NotNull();
         }
     }
 }

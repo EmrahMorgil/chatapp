@@ -22,33 +22,33 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<AuthenticationResponse>> Create(CreateUserCommand user)
+        public async Task<ActionResult> Create(CreateUserCommand user)
         {
             return Ok(await _mediator.Send(user));
         }
 
         [HttpPost("update")]
         [Authorize]
-        public async Task<ActionResult<AuthenticationResponse>> Update(UpdateUserCommand user)
+        public async Task<ActionResult> Update(UpdateUserCommand user)
         {
             return Ok(await _mediator.Send(user));
         }
 
         [HttpPost("list")]
         [Authorize]
-        public async Task<ActionResult<BaseDataResponse<List<UserDto>>>> List(ListUsersQuery command)
+        public async Task<ActionResult> List(ListUsersQuery command)
         {
             return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AuthenticationResponse>> Login(LoginUserQuery user)
+        public async Task<ActionResult> Login(LoginUserQuery user)
         {
             return Ok(await _mediator.Send(user));
         }
-
         [HttpPost("detail")]
-        public async Task<ActionResult<AuthenticationResponse>> Detail(DetailUserQuery user)
+        [Authorize]
+        public async Task<ActionResult> Detail(DetailUserQuery user)
         {
             return Ok(await _mediator.Send(user));
         }

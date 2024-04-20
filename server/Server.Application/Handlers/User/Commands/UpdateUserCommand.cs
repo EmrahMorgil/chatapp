@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Features.User.Commands;
 using Server.Application.Interfaces.Repository;
@@ -13,7 +14,6 @@ namespace Server.Application.Handlers.User.Commands
 {
     public class UpdateUserCommand : IRequest<AuthenticationResponse>
     {
-        public Guid Id { get; set; }
         public string Email { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string OldPassword { get; set; } = null!;
@@ -25,16 +25,21 @@ namespace Server.Application.Handlers.User.Commands
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
+            private readonly IHttpContextAccessor _httpContextAccessor;
 
-            public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+            public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
             {
                 _userRepository = userRepository;
                 _mapper = mapper;
+                _httpContextAccessor = httpContextAccessor;
             }
 
             public async Task<AuthenticationResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
             {
-                var user = await _userRepository.GetById(request.Id);
+                var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+                var authUser = JwtService.DecodeToken(authorizationHeader);
+                var authId = authUser.Claims.First().Value;
+                var user = await _userRepository.GetById(Guid.Parse(authId));
                 var oldPasswordControl = Encryption.VerifyPassword(request.OldPassword, user.Password);
                 if (oldPasswordControl)
                 {
@@ -58,7 +63,7 @@ namespace Server.Application.Handlers.User.Commands
                         }
 
                     var updateUser = new Domain.Entities.User();
-                        updateUser.Id = request.Id;
+                        updateUser.Id = Guid.Parse(authId);
                         updateUser.Email = request.Email;
                         updateUser.Name = request.Name;
                         updateUser.Password = Encryption.EncryptPassword(password);
@@ -77,7 +82,6 @@ namespace Server.Application.Handlers.User.Commands
     {
         public UpdateUserCommandValidator()
         {
-            RuleFor(entity => entity.Id).NotEmpty().NotNull();
             RuleFor(entity => entity.Email).NotEmpty().NotNull();
             RuleFor(entity => entity.Name).NotEmpty().NotNull();
             RuleFor(entity => entity.OldPassword).NotEmpty().NotNull();

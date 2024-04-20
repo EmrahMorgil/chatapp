@@ -1,3 +1,4 @@
+import CookieManager from "../components/helpers/CookieManager";
 import mdlCreateUserRequest from "../core/models/service-models/user/CreateUserRequest";
 import mdlCreateUserResponse from "../core/models/service-models/user/CreateUserResponse";
 import { mdlDetailUserRequest } from "../core/models/service-models/user/DetailUserRequest";
@@ -12,11 +13,12 @@ import mdlUploadResponse from "../core/models/service-models/user/UploadResponse
 import ApiClient from "./ApiClient";
 
 module UserService {
+  const token = CookieManager.getCookie("token") as string;
   function servicePath(): string {
     return "user/";
   }
   export const Create = async (
-    req: mdlCreateUserRequest,
+    req: mdlCreateUserRequest
   ): Promise<mdlCreateUserResponse> => {
     const response = await ApiClient.PostAsync(servicePath() + "create", req);
     var cResponse = response as mdlCreateUserResponse;
@@ -24,8 +26,7 @@ module UserService {
   };
 
   export const Update = async (
-    req: mdlUpdateUserRequest,
-    token: string
+    req: mdlUpdateUserRequest
   ): Promise<mdlUpdateUserResponse> => {
     const response = await ApiClient.PostAsync(servicePath() + "update", req, { headers: { "Authorization": token } });
     var cResponse = response as mdlUpdateUserResponse;
@@ -33,8 +34,7 @@ module UserService {
   };
 
   export const List = async (
-    req: mdlListUserRequest,
-    token: string
+    req: mdlListUserRequest
   ): Promise<mdlListUserResponse> => {
     const response = await ApiClient.PostAsync(servicePath() + "list", req, { headers: { "Authorization": token } });
     var cResponse = response as mdlListUserResponse;
@@ -52,7 +52,7 @@ module UserService {
   export const Detail = async (
     req: mdlDetailUserRequest
   ): Promise<mdlDetailUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "detail", req);
+    const response = await ApiClient.PostAsync(servicePath() + "detail", req, {headers: { "Authorization": token}});
     var cResponse = response as mdlDetailUserResponse;
     return cResponse;
   };

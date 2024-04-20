@@ -29,14 +29,14 @@ namespace Server.WebApi.Controllers
 
         [HttpPost("list")]
         [Authorize]
-        public async Task<ActionResult<BaseDataResponse<List<MessageDto>>>> List(MessagesFilterQuery command)
+        public async Task<ActionResult> List(MessagesFilterQuery command)
         {
             return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("create")]
         [Authorize]
-        public async Task<ActionResult<BaseDataResponse<Guid>>> Create(CreateMessageCommand command)
+        public async Task<ActionResult> Create(CreateMessageCommand command)
         {
             var response = await _mediator.Send(command);
             await _hubContext.Clients.Group(command.Room).SendAsync("ReceiveMessage", response.Body);

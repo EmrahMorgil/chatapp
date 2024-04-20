@@ -8,28 +8,33 @@ import mdlUpdateUserRequest from '../../core/models/service-models/user/UpdateUs
 import CookieManager from '../helpers/CookieManager';
 import ImageValidationHelper from '../helpers/ImageValidationHelper';
 
+interface IUserBarProps {
+  activeUser?: mdlUser;
+}
 
-const UserBar = () => {
+const UserBar: React.FC<IUserBarProps> = (props) => {
 
-  const activeUser: mdlUser = JSON.parse(CookieManager.getCookie("activeUser")!);
-  const [user, setUser] = React.useState<mdlUpdateUserRequest>(new mdlUpdateUserRequest(activeUser.id, activeUser.email, activeUser.name, "", "", "", activeUser.image));
+  const [user, setUser] = React.useState<mdlUpdateUserRequest>();
   const [uploadFile, setUploadFile] = React.useState<FormData>();
   const [passwordChange, setPasswordChange] = React.useState(false);
 
+  React.useEffect(()=>{
+    setUser(new mdlUpdateUserRequest(props.activeUser?.email, props.activeUser?.name, "", "", "", props.activeUser?.image));
+  }, [props.activeUser]);
+
   const handleUpdate = async () => {
-    let image = activeUser.image;
+    let image = props.activeUser?.image;
     if (uploadFile) {
       const uploadResponse = await UserService.UploadImage(uploadFile);
       if(uploadResponse.success)
         image = uploadResponse.body;
     }
     var token = CookieManager.getCookie("token");
-    var request = new mdlUpdateUserRequest(user.id, user.email, user.name, user.oldPassword, user.newPassword, user.newPasswordVerify, image);
-    var response = await UserService.Update(request, token!);
+    var request = new mdlUpdateUserRequest(user?.email, user?.name, user?.oldPassword, user?.newPassword, user?.newPasswordVerify, image);
+    var response = await UserService.Update(request);
     if (response.success && response.token) {
       toast.success(response.message);
       CookieManager.setCookie("token", response.token, 1);
-      CookieManager.setCookie("activeUser", JSON.stringify(response.body), 1);
       window.location.reload();
     } else {
       toast.warning(response.message);
@@ -58,7 +63,7 @@ const UserBar = () => {
   return (
     <div style={{ backgroundColor: "#202C33", height: "70px", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
       <div>
-        <img style={{ borderRadius: "50%", marginLeft: "30px", cursor: "pointer" }} alt='' src={getUserImage(activeUser.image)} width={"50px"} height={"50px"} data-bs-toggle="modal" data-bs-target="#profile" />
+        <img style={{ borderRadius: "50%", marginLeft: "30px", cursor: "pointer" }} alt='' src={getUserImage(props.activeUser?.image)} width={"50px"} height={"50px"} data-bs-toggle="modal" data-bs-target="#profile" />
         <div
           className="modal fade"
           id="profile"
@@ -82,14 +87,14 @@ const UserBar = () => {
               <div className="modal-body">
 
                 <div style={{ marginTop: "3vh" }} className='d-flex align-items-center flex-column gap-2'>
-                  <img id='bar-preview-image' style={{ width: "120px", height: "120px", borderRadius: "50%" }} src={getUserImage(user.image)} />
+                  <img id='bar-preview-image' style={{ width: "120px", height: "120px", borderRadius: "50%" }} src={getUserImage(user?.image)} />
                   <label>Name :</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, name: e.target.value })} className='form-control' value={user.name} name='name' />
+                    <input onChange={(e) => setUser({ ...user, name: e.target.value })} className='form-control' value={user?.name} name='name' />
                   </div>
                   <label>Email :</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, email: e.target.value })} className='form-control' value={user.email} name='email' />
+                    <input onChange={(e) => setUser({ ...user, email: e.target.value })} className='form-control' value={user?.email} name='email' />
                   </div>
                   <label>Image :</label>
                   <div>
@@ -102,20 +107,20 @@ const UserBar = () => {
                   {passwordChange ? <>
                   <label>Old Password :</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, oldPassword: e.target.value })} className='form-control' value={user.oldPassword} name='oldPassword' type='password' />
+                    <input onChange={(e) => setUser({ ...user, oldPassword: e.target.value })} className='form-control' value={user?.oldPassword} name='oldPassword' type='password' />
                   </div>
                   <label>New Password :</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, newPassword: e.target.value })} className='form-control' value={user.newPassword} name='newPassword' type='password' />
+                    <input onChange={(e) => setUser({ ...user, newPassword: e.target.value })} className='form-control' value={user?.newPassword} name='newPassword' type='password' />
                   </div>
                   <label>New Password Verify:</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, newPasswordVerify: e.target.value })} className='form-control' value={user.newPasswordVerify} name='newPasswordVerify' type='password' />
+                    <input onChange={(e) => setUser({ ...user, newPasswordVerify: e.target.value })} className='form-control' value={user?.newPasswordVerify} name='newPasswordVerify' type='password' />
                   </div>
                   </> : <>
                   <label>Password :</label>
                   <div>
-                    <input onChange={(e) => setUser({ ...user, oldPassword: e.target.value })} className='form-control' value={user.oldPassword} name='oldPassword' type='password' />
+                    <input onChange={(e) => setUser({ ...user, oldPassword: e.target.value })} className='form-control' value={user?.oldPassword} name='oldPassword' type='password' />
                   </div>
                   </>}
                  
