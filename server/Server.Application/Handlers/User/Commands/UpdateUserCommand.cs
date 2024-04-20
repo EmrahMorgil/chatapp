@@ -94,7 +94,7 @@ namespace Server.Application.Handlers.User.Commands
     {
         public UpdateUserCommandValidator()
         {
-            RuleFor(entity => entity.Email).NotEmpty().NotNull();
+            RuleFor(entity => entity.Email).NotEmpty().NotNull().EmailAddress();
             RuleFor(entity => entity.Name).NotEmpty().NotNull();
             RuleFor(entity => entity.OldPassword).NotEmpty().NotNull();
             RuleFor(entity => entity.Image).NotEmpty().NotNull();

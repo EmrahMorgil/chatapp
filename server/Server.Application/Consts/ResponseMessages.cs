@@ -1,22 +1,25 @@
 ﻿
+using System.Numerics;
+
 namespace Server.Application.Consts
 {
     public static class ResponseMessages
     {
         public static readonly string Success = "Success";
         public static readonly string Fail = "Fail";
-        public static readonly string UserAlreadyExist = "User Already Exist";
-        public static readonly string UserNotFound = "User Not Found";
-        public static readonly string InvalidCredentials = "Invalid Credentials";
-        public static readonly string NotFound = "Not Found";
-        public static readonly string IncorrectOldPasswordEntry = "Incorrect Old Password Entry";
-        public static readonly string NewPasswordsDoNotMatch = "New Passwords Do Not Match";
-        public static readonly string NewPasswordCannotBeTheSameAsOldPassword = "New Password Cannot Be The Same As Old Password";
-        public static readonly string AnErrorOccurredWhileLoadingTheImage = "An Error Occurred While Loading The Image";
-        public static readonly string CannotBeEmpty = "Cannot Be Empty";
-        public static readonly string ModelValidationFail = "An Error Occured While Request Model Validation";
-        public static readonly string UnauthorizedEntry = "Unauthorized Entry";
-        public static readonly string InvalidImageType = "Invalid Image Type";
-        public static readonly string ThisEmailIsBeingUsed = "This Email Is Being Used";
+        public static readonly string UserAlreadyExist = "User already exist";
+        public static readonly string UserNotFound = "User not found";
+        public static readonly string InvalidCredentials = "Invalid credentials";
+        public static readonly string NotFound = "Not found";
+        public static readonly string IncorrectOldPasswordEntry = "Incorrect old password entry";
+        public static readonly string NewPasswordsDoNotMatch = "New passwords do not match";
+        public static readonly string NewPasswordCannotBeTheSameAsOldPassword = "New password cannot be the same as old password";
+        public static readonly string AnErrorOccurredWhileLoadingTheImage = "An error occurred while loading the image";
+        public static readonly string CannotBeEmpty = "Cannot be empty";
+        public static readonly string ModelValidationFail = "An error occured while request model validation";
+        public static readonly string UnauthorizedEntry = "Unauthorized entry";
+        public static readonly string InvalidImageType = "Invalid image type";
+        public static readonly string ThisEmailIsBeingUsed = "This email is being used";
+        public static readonly string PleaseEnterValidEmailAddress = "Please enter a valid email address";
     }
 }

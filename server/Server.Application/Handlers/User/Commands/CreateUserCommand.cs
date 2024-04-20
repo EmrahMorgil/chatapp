@@ -61,7 +61,7 @@ namespace Server.Application.Features.User.Commands
     {
         public CreateUserCommandValidator()
         {
-            RuleFor(entity => entity.Email).NotEmpty().NotNull();
+            RuleFor(entity => entity.Email).NotEmpty().NotNull().EmailAddress();
             RuleFor(entity => entity.Name).NotEmpty().NotNull();
             RuleFor(entity => entity.Password).NotEmpty().NotNull();
             RuleFor(entity => entity.Image).NotEmpty().NotNull();
