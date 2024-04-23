@@ -4,13 +4,14 @@ import Messages from './Messages'
 import MessageInput from './MessageInput'
 import mdlMessageDto from '../../core/dto/MessageDto';
 import mdlUser from '../../core/models/User';
+import mdlUserDetailDto from '../../core/dto/UserDetailDto';
 
 interface IMessageContainerProps {
   messages?: Array<mdlMessageDto>;
   fnGetMessages?: Function;
   socket?: any;
   scrollToBottom?: Function;
-  activeUser?: mdlUser;
+  activeUser?: mdlUserDetailDto;
 }
 
 const MessageContainer: React.FC<IMessageContainerProps> = (props) => {

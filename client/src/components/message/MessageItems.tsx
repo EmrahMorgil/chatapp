@@ -1,13 +1,12 @@
 import React from "react";
 import moment from "moment";
-import mdlUser from "../../core/models/User";
 import mdlMessageDto from "../../core/dto/MessageDto";
-import CookieManager from "../helpers/CookieManager";
+import mdlUserDetailDto from "../../core/dto/UserDetailDto";
 
 
 interface IMessageItemsProps {
   message?: mdlMessageDto;
-  activeUser?: mdlUser;
+  activeUser?: mdlUserDetailDto;
 }
 
 const MessageItems: React.FC<IMessageItemsProps> = (props) => {

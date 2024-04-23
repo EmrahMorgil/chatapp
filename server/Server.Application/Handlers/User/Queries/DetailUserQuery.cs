@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Dto;
+using Server.Application.Dtos;
 using Server.Application.Handlers.User.Commands;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Password;
@@ -18,9 +19,9 @@ using System.Threading.Tasks;
 
 namespace Server.Application.Features.User.Queries
 {
-    public class DetailUserQuery : IRequest<BaseDataResponse<Domain.Entities.User>>
+    public class DetailUserQuery : IRequest<BaseDataResponse<UserDetailDto>>
     {
-        public class DetailUserQueryHandler : IRequestHandler<DetailUserQuery, BaseDataResponse<Domain.Entities.User>>
+        public class DetailUserQueryHandler : IRequestHandler<DetailUserQuery, BaseDataResponse<UserDetailDto>>
         {
             IUserRepository _userRepository;
             private readonly IMapper _mapper;
@@ -33,7 +34,7 @@ namespace Server.Application.Features.User.Queries
                 _httpContextAccessor = httpContextAccessor;
             }
 
-            public async Task<BaseDataResponse<Domain.Entities.User>> Handle(DetailUserQuery request, CancellationToken cancellationToken)
+            public async Task<BaseDataResponse<UserDetailDto>> Handle(DetailUserQuery request, CancellationToken cancellationToken)
             {
                 var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
                 var authUser = JwtService.DecodeToken(authorizationHeader);
@@ -42,11 +43,12 @@ namespace Server.Application.Features.User.Queries
                 if (authId != null)
                 {
                     var user = await _userRepository.GetById(Guid.Parse(authId));
-                    return new BaseDataResponse<Domain.Entities.User>(user, true, ResponseMessages.Success);
+                    var userDto = _mapper.Map<UserDetailDto>(user);
+                    return new BaseDataResponse<UserDetailDto>(userDto, true, ResponseMessages.Success);
                 }
                 else
                 {
-                    return new BaseDataResponse<Domain.Entities.User>(null!, false, ResponseMessages.UnauthorizedEntry);
+                    return new BaseDataResponse<UserDetailDto>(null!, false, ResponseMessages.UnauthorizedEntry);
                 }
             }
         }

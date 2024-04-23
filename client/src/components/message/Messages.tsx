@@ -2,11 +2,12 @@ import React from "react";
 import MessageItems from "./MessageItems";
 import mdlUser from "../../core/models/User";
 import mdlMessageDto from "../../core/dto/MessageDto";
+import mdlUserDetailDto from "../../core/dto/UserDetailDto";
 
 interface IMessagesProps {
   messages?: mdlMessageDto[];
   scrollToBottom?: Function;
-  activeUser?: mdlUser;
+  activeUser?: mdlUserDetailDto;
 }
 
 const Messages: React.FC<IMessagesProps> = (props) => {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Server.Application.Dto;
+using Server.Application.Dtos;
 using Server.Application.Features.Message.Commands;
 using Server.Application.Features.User.Commands;
 using Server.Application.Features.User.Queries;
@@ -25,6 +26,9 @@ namespace Server.Application.Mapping
                .ReverseMap();
 
             CreateMap<Domain.Entities.User, UserDto>()
+               .ReverseMap();
+
+            CreateMap<Domain.Entities.User, UserDetailDto>()
                .ReverseMap();
         }
     }

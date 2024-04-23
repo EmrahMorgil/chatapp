@@ -15,6 +15,7 @@ import CookieManager from "../components/helpers/CookieManager";
 import getUserImage from "../components/helpers/ImageHelper";
 import sounds from "../components/data/Sounds";
 import { enmSoundType } from "../core/enums/SoundType";
+import mdlUserDetailDto from "../core/dto/UserDetailDto";
 
 const Home = () => {
   const [connection, setConnection] =
@@ -23,7 +24,7 @@ const Home = () => {
   const [pageOnReload, setPageOnReload] = React.useState(true);
   const [users, setUsers] = React.useState<mdlUserDto[]>([]);
   const [loadingScreen, setLoadingScreen] = React.useState(false);
-  const [activeUser, setActiveUser] = React.useState<mdlUserDto>();
+  const [activeUser, setActiveUser] = React.useState<mdlUserDetailDto>();
 
   React.useEffect(() => {
     if (!connection) {
