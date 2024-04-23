@@ -1,9 +1,7 @@
 import CookieManager from "../components/helpers/CookieManager";
 import mdlCreateUserRequest from "../core/models/service-models/user/CreateUserRequest";
 import mdlCreateUserResponse from "../core/models/service-models/user/CreateUserResponse";
-import { mdlDetailUserRequest } from "../core/models/service-models/user/DetailUserRequest";
 import mdlDetailUserResponse from "../core/models/service-models/user/DetailUserResponse";
-import mdlListUserRequest from "../core/models/service-models/user/ListUserRequest";
 import mdlListUserResponse from "../core/models/service-models/user/ListUserResponse";
 import mdlLoginUserRequest from "../core/models/service-models/user/LoginUserRequest";
 import mdlLoginUserResponse from "../core/models/service-models/user/LoginUserResponse";
@@ -19,7 +17,11 @@ module UserService {
   export const Create = async (
     req: mdlCreateUserRequest
   ): Promise<mdlCreateUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "create", req);
+    const response = await ApiClient.PostAsync(servicePath() + "create", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers: { "Content-Type": "application/json" },
+    });
     var cResponse = response as mdlCreateUserResponse;
     return cResponse;
   };
@@ -27,33 +29,41 @@ module UserService {
   export const Update = async (
     req: mdlUpdateUserRequest
   ): Promise<mdlUpdateUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "update", req, { headers: { "Authorization": token } });
+    const response = await ApiClient.PostAsync(servicePath() + "update", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers: { "Content-Type": "application/json", Authorization: token },
+    });
     var cResponse = response as mdlUpdateUserResponse;
-    return cResponse;
-  };
-
-  export const List = async (
-    req: mdlListUserRequest
-  ): Promise<mdlListUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "list", req, { headers: { "Authorization": token } });
-    var cResponse = response as mdlListUserResponse;
     return cResponse;
   };
 
   export const Login = async (
     req: mdlLoginUserRequest
   ): Promise<mdlLoginUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "login", req);
+    const response = await ApiClient.PostAsync(servicePath() + "login", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers: { "Content-Type": "application/json" },
+    });
     var cResponse = response as mdlLoginUserResponse;
     return cResponse;
   };
 
-  export const Detail = async (
-    req: mdlDetailUserRequest
-  ): Promise<mdlDetailUserResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "detail", req, {headers: { "Authorization": token}});
-    var cResponse = response as mdlDetailUserResponse;
-    return cResponse;
+  export const List = async (): Promise<mdlListUserResponse> => {
+    const response = await ApiClient.GetAsync(servicePath() + "list", {
+      method: "GET",
+      headers: { Authorization: token },
+    });
+    return response as mdlListUserResponse;
+  };
+
+  export const Detail = async (): Promise<mdlDetailUserResponse> => {
+    const response = await ApiClient.GetAsync(servicePath() + "detail", {
+      method: "GET",
+      headers: { Authorization: token },
+    });
+    return response as mdlDetailUserResponse;
   };
 }
 

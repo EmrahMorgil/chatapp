@@ -1,6 +1,5 @@
-import mdlUser from "../User";
-import mdlDataResponse from "./DataResponse";
+import mdlBaseResponse from "./BaseResponse";
 
-export default class mdlAuthenticationResponse extends mdlDataResponse<mdlUser>{
+export default class mdlAuthenticationResponse extends mdlBaseResponse{
     token?: string;
 }

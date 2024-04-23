@@ -42,16 +42,16 @@ namespace Server.Application.Features.User.Commands
                         var user = _mapper.Map<Domain.Entities.User>(request);
                         user.Image = imageName;
                         user.Password = Encryption.EncryptPassword(request.Password);
-                        return new AuthenticationResponse(user, await _userRepository.Create(user), JwtService.GenerateToken(user.Id), ResponseMessages.Success);
+                        return new AuthenticationResponse(JwtService.GenerateToken(user.Id), await _userRepository.Create(user), ResponseMessages.Success);
                     }
                     else
                     {
-                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.UserAlreadyExist);
+                        return new AuthenticationResponse(null!, false, ResponseMessages.UserAlreadyExist);
                     }
                 }
                 else
                 {
-                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
+                    return new AuthenticationResponse(null!, false, ResponseMessages.AnErrorOccurredWhileLoadingTheImage);
                 }
                 
             }

@@ -1,16 +1,7 @@
-﻿using Azure.Core;
-using Dapper;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Identity.Client;
-using Server.Application.Dto;
-using Server.Application.Features.User.Queries;
+﻿using Dapper;
 using Server.Application.Interfaces.Repository;
-using Server.Application.Wrappers;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
-using System.Data;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Server.Persistence.Repositories
 {

@@ -7,13 +7,9 @@ using Server.Application.Dto;
 using Server.Application.Features.User.Queries;
 using Server.Application.Interfaces.Repository;
 using Server.Application.Wrappers;
-using Server.Domain.Entities;
 using Server.Persistence.Context;
 using Server.Persistence.Helpers;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using System.Reflection;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Server.Persistence.Repositories
 {

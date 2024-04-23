@@ -13,17 +13,23 @@ module MessageService {
   export const List = async (
     req: mdlListMessageRequest
   ): Promise<mdlListMessageResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "list", req, { headers: { "Authorization": token } });
-    var cResponse = response as mdlListMessageResponse;
-    return cResponse;
+    const response = await ApiClient.PostAsync(servicePath() + "list", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers: { "Content-Type": "application/json", Authorization: token },
+    });
+    return response as mdlListMessageResponse;
   };
 
   export const Create = async (
     req: mdlCreateMessageRequest
   ): Promise<mdlCreateMessageResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "create", req, { headers: { "Authorization": token } });
-    var cResponse = response as mdlCreateMessageResponse;
-    return cResponse;
+    const response = await ApiClient.PostAsync(servicePath() + "create", {
+      method: "POST",
+      body: JSON.stringify(req),
+      headers: { "Content-Type": "application/json", Authorization: token },
+    });
+    return response as mdlCreateMessageResponse;
   };
 }
 

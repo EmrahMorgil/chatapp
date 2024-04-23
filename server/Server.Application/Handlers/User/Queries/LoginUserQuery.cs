@@ -37,16 +37,16 @@ namespace Server.Application.Features.User.Queries
                 {
                     if(Encryption.VerifyPassword(request.Password, user.Password))
                     {
-                        return new AuthenticationResponse(user, true, JwtService.GenerateToken(user.Id), ResponseMessages.Success);
+                        return new AuthenticationResponse(JwtService.GenerateToken(user.Id), true, ResponseMessages.Success);
                     }
                     else
                     {
-                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.InvalidCredentials);
+                        return new AuthenticationResponse(null!, false, ResponseMessages.InvalidCredentials);
                     }
                 }
                 else
                 {
-                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.InvalidCredentials);
+                    return new AuthenticationResponse(null!, false, ResponseMessages.InvalidCredentials);
                 }
             }
         }

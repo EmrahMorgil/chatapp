@@ -65,9 +65,9 @@ namespace Server.Application.Handlers.User.Commands
                         if (!String.IsNullOrEmpty(request.NewPassword) && !String.IsNullOrEmpty(request.NewPasswordVerify))
                         {
                             if (request.NewPassword != request.NewPasswordVerify)
-                                return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordsDoNotMatch);
+                                return new AuthenticationResponse(null!, false, ResponseMessages.NewPasswordsDoNotMatch);
                             if (request.NewPassword == request.OldPassword)
-                                return new AuthenticationResponse(null!, false, null!, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
+                                return new AuthenticationResponse(null!, false, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
                         }
                         var updateUser = new Domain.Entities.User();
                         updateUser.Id = Guid.Parse(authId);
@@ -75,16 +75,16 @@ namespace Server.Application.Handlers.User.Commands
                         updateUser.Name = request.Name;
                         updateUser.Password = Encryption.EncryptPassword(password);
                         updateUser.Image = imageName != null ? imageName : user.Image;
-                        return new AuthenticationResponse(updateUser, await _userRepository.Update(updateUser), JwtService.GenerateToken(updateUser.Id), ResponseMessages.Success);
+                        return new AuthenticationResponse(JwtService.GenerateToken(updateUser.Id), await _userRepository.Update(updateUser), ResponseMessages.Success);
                     }
                     else
                     {
-                        return new AuthenticationResponse(null!, false, null!, ResponseMessages.IncorrectOldPasswordEntry);
+                        return new AuthenticationResponse(null!, false, ResponseMessages.IncorrectOldPasswordEntry);
                     }
                 }
                 else
                 {
-                    return new AuthenticationResponse(null!, false, null!, ResponseMessages.ThisEmailIsBeingUsed);
+                    return new AuthenticationResponse(null!, false, ResponseMessages.ThisEmailIsBeingUsed);
                 }
             }
         }

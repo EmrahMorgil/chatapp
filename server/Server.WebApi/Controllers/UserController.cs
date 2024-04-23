@@ -22,35 +22,36 @@ namespace Server.WebApi.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> Create(CreateUserCommand user)
+        public async Task<ActionResult> Create(CreateUserCommand command)
         {
-            return Ok(await _mediator.Send(user));
+            return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("update")]
         [Authorize]
-        public async Task<ActionResult> Update(UpdateUserCommand user)
-        {
-            return Ok(await _mediator.Send(user));
-        }
-
-        [HttpPost("list")]
-        [Authorize]
-        public async Task<ActionResult> List(ListUsersQuery command)
+        public async Task<ActionResult> Update(UpdateUserCommand command)
         {
             return Ok(await _mediator.Send(command));
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginUserQuery user)
+        public async Task<ActionResult> Login(LoginUserQuery query)
         {
-            return Ok(await _mediator.Send(user));
+            return Ok(await _mediator.Send(query));
         }
-        [HttpPost("detail")]
+
+        [HttpGet("list")]
         [Authorize]
-        public async Task<ActionResult> Detail(DetailUserQuery user)
+        public async Task<ActionResult> List([FromQuery]ListUsersQuery query)
         {
-            return Ok(await _mediator.Send(user));
+            return Ok(await _mediator.Send(query));
+        }
+        
+        [HttpGet("detail")]
+        [Authorize]
+        public async Task<ActionResult> Detail([FromQuery]DetailUserQuery query)
+        {
+            return Ok(await _mediator.Send(query));
         }
     }
 }

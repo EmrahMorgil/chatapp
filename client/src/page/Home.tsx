@@ -6,18 +6,15 @@ import { toast } from "react-toastify";
 import { HandleLogout } from "../components/helpers/HandleLogout";
 import LoadingSpinner from "../components/helpers/LoadingSpinner";
 import mdlUserDto from "../core/dto/UserDto";
-import mdlUser from "../core/models/User";
 import mdlOnlineUsers from "../core/models/OnlineUsers";
 import UserService from "../utils/UserService";
 import { mdlListMessageRequest } from "../core/models/service-models/message/ListMessageRequest";
 import MessageService from "../utils/MessageService";
-import mdlListUserRequest from "../core/models/service-models/user/ListUserRequest";
 import mdlMessageDto from "../core/dto/MessageDto";
 import CookieManager from "../components/helpers/CookieManager";
 import getUserImage from "../components/helpers/ImageHelper";
 import sounds from "../components/data/Sounds";
 import { enmSoundType } from "../core/enums/SoundType";
-import { mdlDetailUserRequest } from "../core/models/service-models/user/DetailUserRequest";
 
 const Home = () => {
   const [connection, setConnection] =
@@ -76,7 +73,7 @@ const Home = () => {
   };
 
   const fnGetActiveUser = async () => {
-    const response = await UserService.Detail(new mdlDetailUserRequest());
+    const response = await UserService.Detail();
     if (response.success && response.body) {
       setActiveUser(response.body);
     } else {
@@ -177,8 +174,7 @@ const Home = () => {
   };
 
   const getUsers = async (onlineUsers: mdlOnlineUsers) => {
-    var token = CookieManager.getCookie("token");
-    const response = await UserService.List(new mdlListUserRequest());
+    const response = await UserService.List();
 
     if (response.success && response.body != undefined) {
       response.body?.forEach((user) => {

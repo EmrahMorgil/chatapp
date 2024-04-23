@@ -29,9 +29,9 @@ namespace Server.WebApi.Controllers
 
         [HttpPost("list")]
         [Authorize]
-        public async Task<ActionResult> List(MessagesFilterQuery command)
+        public async Task<ActionResult> List(MessagesFilterQuery query)
         {
-            return Ok(await _mediator.Send(command));
+            return Ok(await _mediator.Send(query));
         }
 
         [HttpPost("create")]

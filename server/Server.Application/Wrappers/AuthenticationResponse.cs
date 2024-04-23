@@ -1,17 +1,12 @@
 ﻿using Server.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Application.Wrappers
 {
-    public class AuthenticationResponse : BaseDataResponse<User>
+    public class AuthenticationResponse : BaseResponse
     {
         public string Token { get; set; } = null!;
 
-        public AuthenticationResponse(User pBody, bool pSuccess, string pToken, string pMessage) : base(pBody, pSuccess, pMessage)
+        public AuthenticationResponse(string pToken, bool pSuccess, string pMessage) : base(pSuccess, pMessage)
         {
             Token = pToken;
         }

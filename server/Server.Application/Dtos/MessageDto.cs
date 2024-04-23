@@ -12,7 +12,6 @@ namespace Server.Application.Dto
         public Guid Id { get; set; }
         public DateTime CreatedDate { get; set; }
         public UserDto SenderUser { get; set; } = null!;
-        //public string SenderName { get; set; }
         public string Content { get; set; } = null!;
         public string Room { get; set; } = null!;
     }
