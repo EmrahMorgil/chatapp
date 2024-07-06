@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Server.Persistence;
+namespace Server.Shared;
 
 public class Configuration
 {

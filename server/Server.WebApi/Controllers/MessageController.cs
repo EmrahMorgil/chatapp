@@ -16,9 +16,9 @@ public class MessageController : ControllerBase
     {
         _mediator = mediator;
     }
-    [HttpPost("list")]
+    [HttpGet("list")]
     [Authorize]
-    public async Task<ActionResult> List(MessagesFilterQuery query)
+    public async Task<ActionResult> List([FromQuery]MessagesFilterQuery query)
     {
         return Ok(await _mediator.Send(query));
     }

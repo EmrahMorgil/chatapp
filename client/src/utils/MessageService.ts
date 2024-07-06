@@ -13,10 +13,9 @@ module MessageService {
   export const List = async (
     req: mdlListMessageRequest
   ): Promise<mdlListMessageResponse> => {
-    const response = await ApiClient.PostAsync(servicePath() + "list", {
-      method: "POST",
-      body: JSON.stringify(req),
-      headers: { "Content-Type": "application/json", Authorization: token },
+    const response = await ApiClient.GetAsync(servicePath() + "list?room=" + req.room, {
+      method: "GET",
+      headers: { Authorization: token },
     });
     return response as mdlListMessageResponse;
   };

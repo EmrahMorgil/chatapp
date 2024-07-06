@@ -7,6 +7,7 @@ using Server.Domain.Entities;
 using Server.Persistence;
 using Server.Persistence.Extensions;
 using Server.Realtime;
+using Server.Shared;
 using Server.Shared.Variables;
 using Server.WebApi.Middlewares;
 using System.Text;
@@ -55,7 +56,7 @@ builder.Services.AddAuthentication(opt =>
     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -84,7 +85,7 @@ var app = builder.Build();
 
 
 
-//app.UseHttpsRedirection(); //kaldýrýlacak
+//app.UseHttpsRedirection(); //kaldirilacak
 
 //JWT
 app.UseAuthentication();
