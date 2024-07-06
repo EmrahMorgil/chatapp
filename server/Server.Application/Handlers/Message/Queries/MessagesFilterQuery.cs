@@ -4,7 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Dto;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
+using Server.Application.Variables;
 using Server.Application.Wrappers;
 using Server.Persistence.Services;
 
@@ -19,21 +20,16 @@ public class MessagesFilterQuery : IRequest<BaseDataResponse<List<MessageDto>>>
         IMessageRepository _messageRepository;
         IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public MessagesFilterQueryHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public MessagesFilterQueryHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _messageRepository = messageRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseDataResponse<List<MessageDto>>> Handle(MessagesFilterQuery request, CancellationToken cancellationToken)
         {
-            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var AuthUser = JwtService.DecodeToken(authorizationHeader);
-            var AuthId = AuthUser.Claims.First().Value;
-            if(request.Room.Contains(AuthId))
+            if(request.Room.Contains(Global.UserId.ToString()))
             {
                 var users = await _userRepository.List();
                 var messages = await _messageRepository.List();

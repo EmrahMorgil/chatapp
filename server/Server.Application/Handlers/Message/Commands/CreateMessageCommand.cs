@@ -4,7 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
 using Server.Application.Dto;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
+using Server.Application.Variables;
 using Server.Application.Wrappers;
 using Server.Persistence.Services;
 
@@ -20,27 +21,22 @@ public class CreateMessageCommand : IRequest<BaseDataResponse<MessageDto>>
         IMessageRepository _messageRepository;
         IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AddMessageCommandHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public AddMessageCommandHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper)
         {
             _messageRepository = messageRepository;
             _userRepository = userRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<BaseDataResponse<MessageDto>> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
         {
-            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var authUser = JwtService.DecodeToken(authorizationHeader);
-            var senderId = authUser.Claims.First().Value;
-            if (senderId != null && request.Room.Contains(senderId))
+            if (request.Room.Contains(Global.UserId.ToString()))
             {
                 var message = _mapper.Map<Domain.Entities.Message>(request);
-                message.SenderId = Guid.Parse(senderId);
+                message.SenderId = Global.UserId;
                 var messageDto = _mapper.Map<MessageDto>(message);
-                var user = await _userRepository.GetById(Guid.Parse(senderId));
+                var user = await _userRepository.GetById(Global.UserId);
                 messageDto.SenderUser = _mapper.Map<UserDto>(user);
                 return new BaseDataResponse<MessageDto>(messageDto, await _messageRepository.Create(message), ResponseMessages.Success);
             }

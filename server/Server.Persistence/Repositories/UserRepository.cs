@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
 

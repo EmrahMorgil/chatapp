@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Server.Application.Variables;
 using System.Data;
 
 namespace Server.Persistence.Context;
@@ -11,7 +12,7 @@ public class DapperContext
     public DapperContext(IConfiguration configuration)
     {
         _configuration = configuration;
-        _connectionString = Configuration.GetSettings<string>("ConnectionStrings:ConnectionString");
+        _connectionString = Global.ConnectionString;
     }
     public IDbConnection CreateConnection()
         => new SqlConnection(_connectionString);

@@ -3,9 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Server.Application.Consts;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
 using Server.Application.Password;
 using Server.Application.Services;
+using Server.Application.Variables;
 using Server.Application.Wrappers;
 using Server.Persistence.Services;
 
@@ -24,22 +25,17 @@ public class UpdateUserCommand : IRequest<AuthenticationResponse>
     {
         IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<AuthenticationResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var imageName = ImageUploader.UploadImage(request.Image);
-            var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
-            var authUser = JwtService.DecodeToken(authorizationHeader);
-            var authId = authUser.Claims.First().Value;
-            var user = await _userRepository.GetById(Guid.Parse(authId));
+            var user = await _userRepository.GetById(Global.UserId);
             var userList = await _userRepository.List();
             var filteredUsers = userList.Where(u => u.Id != user.Id).ToList();
             var oldPasswordControl = Encryption.VerifyPassword(request.OldPassword, user.Password);
@@ -68,12 +64,12 @@ public class UpdateUserCommand : IRequest<AuthenticationResponse>
                             return new AuthenticationResponse(null!, false, ResponseMessages.NewPasswordCannotBeTheSameAsOldPassword);
                     }
                     var updateUser = new Domain.Entities.User();
-                    updateUser.Id = Guid.Parse(authId);
+                    updateUser.Id = Global.UserId;
                     updateUser.Email = request.Email;
                     updateUser.Name = request.Name;
                     updateUser.Password = Encryption.EncryptPassword(password);
                     updateUser.Image = imageName != null ? imageName : user.Image;
-                    return new AuthenticationResponse(JwtService.GenerateToken(updateUser.Id), await _userRepository.Update(updateUser), ResponseMessages.Success);
+                    return new AuthenticationResponse(JwtService.CreateToken(updateUser), await _userRepository.Update(updateUser), ResponseMessages.Success);
                 }
                 else
                 {

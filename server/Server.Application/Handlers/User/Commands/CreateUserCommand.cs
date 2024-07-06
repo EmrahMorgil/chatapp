@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Server.Application.Consts;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
 using Server.Application.Password;
 using Server.Application.Services;
 using Server.Application.Wrappers;
@@ -40,7 +40,7 @@ public class CreateUserCommand : IRequest<AuthenticationResponse>
                     var user = _mapper.Map<Domain.Entities.User>(request);
                     user.Image = imageName;
                     user.Password = Encryption.EncryptPassword(request.Password);
-                    return new AuthenticationResponse(JwtService.GenerateToken(user.Id), await _userRepository.Create(user), ResponseMessages.Success);
+                    return new AuthenticationResponse(JwtService.CreateToken(user), await _userRepository.Create(user), ResponseMessages.Success);
                 }
                 else
                 {

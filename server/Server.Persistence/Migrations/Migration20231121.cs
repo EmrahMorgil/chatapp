@@ -6,18 +6,18 @@ public class AddProductsTable : Migration
     public override void Up()
     {
         Create.Table("Messages")
-            .WithColumn("id").AsGuid().PrimaryKey()
-            .WithColumn("createdDate").AsDateTime().NotNullable()
-            .WithColumn("senderId").AsGuid().NotNullable()
-            .WithColumn("content").AsString(int.MaxValue).NotNullable()
-            .WithColumn("room").AsString(500).NotNullable();
+            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("CreatedDate").AsDateTime().NotNullable()
+            .WithColumn("SenderId").AsGuid().NotNullable()
+            .WithColumn("Content").AsString(int.MaxValue).NotNullable()
+            .WithColumn("Room").AsString(500).NotNullable();
         Create.Table("Users")
-            .WithColumn("id").AsGuid().PrimaryKey()
-            .WithColumn("createdDate").AsDateTime().NotNullable()
-            .WithColumn("email").AsString(50).NotNullable()
-            .WithColumn("name").AsString(50).NotNullable()
-            .WithColumn("password").AsString(300).NotNullable()
-            .WithColumn("image").AsString(int.MaxValue).NotNullable();
+            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("CreatedDate").AsDateTime().NotNullable()
+            .WithColumn("Email").AsString(50).NotNullable()
+            .WithColumn("Name").AsString(50).NotNullable()
+            .WithColumn("Password").AsString(300).NotNullable()
+            .WithColumn("Image").AsString(int.MaxValue).NotNullable();
     }
 
     public override void Down()

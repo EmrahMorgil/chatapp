@@ -1,11 +1,9 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Server.Application;
 using Server.Application.Behaviors;
+using Server.Application.Variables;
 using Server.Domain.Entities;
 using Server.Persistence;
 using Server.Persistence.Extensions;
@@ -15,10 +13,17 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var settings = builder.Configuration.GetSection("TokenInfo").Get<Settings>();
+var settings = Configuration.GetSettings<Settings>("TokenInfo");
+
+//Variables
+Global.ConnectionString = Configuration.GetSettings<string>("ConnectionStrings:DefaultConnection");
+Global.Secret = settings.Secret;
+Global.ValidIssuer = settings.ValidIssuer;
+Global.ValidAudience = settings.ValidAudience;
+Global.ValidityPeriod = settings.ValidityPeriod;
 
 //Http isteginde gonderilen header'a ulasmak ıcın eklendi.
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 //Registiration
 //builder.Services.AddFluentValidationAutoValidation();   bu fluentvalidation un default ayarları
@@ -39,7 +44,6 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     )
 );
 
-
 //SignalR
 builder.Services.AddSignalR();
 //---------------
@@ -57,8 +61,8 @@ builder.Services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = settings.ValidIssuer,
-        ValidAudience = settings.ValidAudience,
+        ValidIssuer = Global.ValidIssuer,
+        ValidAudience = Global.ValidAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.Secret)),
     };
 });
@@ -87,6 +91,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 //---
 
+
+
 app.MapHub<ChatHub>("/api/chat-hub");
 
 //static klasör wwwroot için
@@ -96,7 +102,8 @@ app.UseStaticFiles();
 app.UseCors();
 //------
 
-//exception handler
+//Middlewares
+app.UseMiddleware<AuthenticationMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();

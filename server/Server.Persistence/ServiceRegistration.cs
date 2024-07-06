@@ -1,6 +1,7 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
+using Server.Application.Variables;
 using Server.Persistence.Context;
 using Server.Persistence.Repositories;
 using System.Reflection;
@@ -18,7 +19,7 @@ public static class ServiceRegistration
             .AddFluentMigratorCore()
             .ConfigureRunner(c => c
                 .AddSqlServer2012()
-                .WithGlobalConnectionString(Configuration.GetSettings<string>("ConnectionStrings:ConnectionString"))
+                .WithGlobalConnectionString(Global.ConnectionString)
                 .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations());
     }
 }

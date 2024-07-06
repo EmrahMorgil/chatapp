@@ -1,17 +1,10 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Server.Application.Consts;
-using Server.Application.Interfaces.Repository;
+using Server.Application.Interfaces;
 using Server.Application.Password;
 using Server.Application.Wrappers;
-using Server.Domain.Entities;
 using Server.Persistence.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Server.Application.Features.User.Queries;
 
@@ -37,7 +30,7 @@ public class LoginUserQuery : IRequest<AuthenticationResponse>
             {
                 if(Encryption.VerifyPassword(request.Password, user.Password))
                 {
-                    return new AuthenticationResponse(JwtService.GenerateToken(user.Id), true, ResponseMessages.Success);
+                    return new AuthenticationResponse(JwtService.CreateToken(user), true, ResponseMessages.Success);
                 }
                 else
                 {
