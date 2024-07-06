@@ -4,8 +4,6 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
-/Server.WebApi/appsettings.json
-/Server.WebApi/appsettings.Development.json
 /Server.WebApi/Web_Config
 *.rsuser
 *.suo
