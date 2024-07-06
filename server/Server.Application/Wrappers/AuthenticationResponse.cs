@@ -1,14 +1,11 @@
-﻿using Server.Domain.Entities;
+﻿namespace Server.Application.Wrappers;
 
-namespace Server.Application.Wrappers
+public class AuthenticationResponse : BaseResponse
 {
-    public class AuthenticationResponse : BaseResponse
-    {
-        public string Token { get; set; } = null!;
+    public string Token { get; set; } = null!;
 
-        public AuthenticationResponse(string pToken, bool pSuccess, string pMessage) : base(pSuccess, pMessage)
-        {
-            Token = pToken;
-        }
+    public AuthenticationResponse(string pToken, bool pSuccess, string pMessage) : base(pSuccess, pMessage)
+    {
+        Token = pToken;
     }
 }

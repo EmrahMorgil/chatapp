@@ -1,5 +1,4 @@
-﻿
-using FluentMigrator;
+﻿using FluentMigrator;
 
 [Migration(20231121)]
 public class AddProductsTable : Migration

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Server.Domain.Common
+namespace Server.Domain.Common;
+
+public class BaseEntity
 {
-    public class BaseEntity
-    {
-        [Column("id")]
-        public Guid Id { get; set; } = Guid.NewGuid();
-        [Column("createdDate")]
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-    }
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedDate { get; set; } = DateTime.Now;
 }

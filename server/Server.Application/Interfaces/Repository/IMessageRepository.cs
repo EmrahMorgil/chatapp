@@ -1,10 +1,9 @@
 ﻿
 using Server.Domain.Entities;
 
-namespace Server.Application.Interfaces.Repository
+namespace Server.Application.Interfaces.Repository;
+
+public interface IMessageRepository: IGenericRepository<Message>
 {
-    public interface IMessageRepository: IGenericRepository<Message>
-    {
-        
-    }
+    
 }

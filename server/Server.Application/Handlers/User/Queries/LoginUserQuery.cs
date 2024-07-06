@@ -13,50 +13,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Application.Features.User.Queries
+namespace Server.Application.Features.User.Queries;
+
+public class LoginUserQuery : IRequest<AuthenticationResponse>
 {
-    public class LoginUserQuery : IRequest<AuthenticationResponse>
+    public string Email { get; set; } = null!;
+    public string Password { get; set; } = null!;
+
+    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, AuthenticationResponse>
     {
-        public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
+        IUserRepository _userRepository;
 
-        public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, AuthenticationResponse>
+        public LoginUserQueryHandler(IUserRepository userRepository)
         {
-            IUserRepository _userRepository;
+            _userRepository = userRepository;
+        }
 
-            public LoginUserQueryHandler(IUserRepository userRepository)
+        public async Task<AuthenticationResponse> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.GetByEmail(request.Email);
+
+            if(user != null)
             {
-                _userRepository = userRepository;
-            }
-
-            public async Task<AuthenticationResponse> Handle(LoginUserQuery request, CancellationToken cancellationToken)
-            {
-                var user = await _userRepository.GetByEmail(request.Email);
-
-                if(user != null)
+                if(Encryption.VerifyPassword(request.Password, user.Password))
                 {
-                    if(Encryption.VerifyPassword(request.Password, user.Password))
-                    {
-                        return new AuthenticationResponse(JwtService.GenerateToken(user.Id), true, ResponseMessages.Success);
-                    }
-                    else
-                    {
-                        return new AuthenticationResponse(null!, false, ResponseMessages.InvalidCredentials);
-                    }
+                    return new AuthenticationResponse(JwtService.GenerateToken(user.Id), true, ResponseMessages.Success);
                 }
                 else
                 {
                     return new AuthenticationResponse(null!, false, ResponseMessages.InvalidCredentials);
                 }
             }
+            else
+            {
+                return new AuthenticationResponse(null!, false, ResponseMessages.InvalidCredentials);
+            }
         }
     }
-    public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
+}
+public class LoginUserQueryValidator : AbstractValidator<LoginUserQuery>
+{
+    public LoginUserQueryValidator()
     {
-        public LoginUserQueryValidator()
-        {
-            RuleFor(entity => entity.Email).NotEmpty().NotNull();
-            RuleFor(entity => entity.Password).NotEmpty().NotNull();
-        }
+        RuleFor(entity => entity.Email).NotEmpty().NotNull();
+        RuleFor(entity => entity.Password).NotEmpty().NotNull();
     }
 }
