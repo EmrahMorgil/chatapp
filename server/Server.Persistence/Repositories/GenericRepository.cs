@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using Server.Application.Interfaces;
 using Server.Persistence.Context;
 using Server.Persistence.Helpers;
+using Server.Shared.Interfaces;
 using System.Data;
-using System.Security.Cryptography;
 
 namespace Server.Persistence.Repositories;
 

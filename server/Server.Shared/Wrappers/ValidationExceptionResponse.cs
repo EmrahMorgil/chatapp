@@ -1,6 +1,6 @@
-﻿using Server.Application.Consts;
+﻿using Server.Shared.Consts;
 
-namespace Server.Application.Wrappers;
+namespace Server.Shared.Wrappers;
 
 public class ValidationExceptionResponse : BaseResponse
 {

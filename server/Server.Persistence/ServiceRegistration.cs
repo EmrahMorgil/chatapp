@@ -1,9 +1,9 @@
 ﻿using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
-using Server.Application.Interfaces;
-using Server.Application.Variables;
 using Server.Persistence.Context;
 using Server.Persistence.Repositories;
+using Server.Shared.Interfaces;
+using Server.Shared.Variables;
 using System.Reflection;
 
 namespace Server.Persistence;

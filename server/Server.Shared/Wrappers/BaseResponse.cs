@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Wrappers;
+﻿namespace Server.Shared.Wrappers;
 
 public class BaseResponse
 {

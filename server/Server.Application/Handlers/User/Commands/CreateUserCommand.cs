@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Server.Application.Consts;
-using Server.Application.Interfaces;
-using Server.Application.Password;
-using Server.Application.Services;
-using Server.Application.Wrappers;
-using Server.Persistence.Services;
+using Server.Shared.Consts;
+using Server.Shared.Interfaces;
+using Server.Shared.Password;
+using Server.Shared.Services;
+using Server.Shared.Wrappers;
 
 namespace Server.Application.Features.User.Commands;
 
@@ -33,7 +32,7 @@ public class CreateUserCommand : IRequest<AuthenticationResponse>
             var imageName = ImageUploader.UploadImage(request.Image);
             if (imageName != null)
             {
-                var existUser = _userRepository.GetByEmail(request.Email);
+                var existUser = await _userRepository.GetByEmail(request.Email);
                 if (existUser == null)
                 {
                     var user = _mapper.Map<Domain.Entities.User>(request);

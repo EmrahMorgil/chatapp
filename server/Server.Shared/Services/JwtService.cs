@@ -1,11 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using Server.Application.Variables;
 using Server.Domain.Entities;
+using Server.Shared.Variables;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Server.Persistence.Services;
+namespace Server.Shared.Services;
 
 public class JwtService
 {

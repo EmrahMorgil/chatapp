@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using Server.Application.Dto;
-using Server.Application.Interfaces;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
-using System.Security.Cryptography;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
 
 namespace Server.Persistence.Repositories;
 
@@ -24,7 +23,7 @@ public class MessageRepository : GenericRepository<Message>, IMessageRepository
                       ON m.UserId = u.Id
                       WHERE Room = @pRoom";
         var parameters = new DynamicParameters();
-        parameters.Add("Room", pRoom);
+        parameters.Add("pRoom", pRoom);
 
         using (var connection = _dbContext.CreateConnection())
         {

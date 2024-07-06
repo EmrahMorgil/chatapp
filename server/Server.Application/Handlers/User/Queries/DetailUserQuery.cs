@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using Server.Application.Consts;
-using Server.Application.Dtos;
-using Server.Application.Interfaces;
-using Server.Application.Variables;
-using Server.Application.Wrappers;
+using Server.Shared.Consts;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
+using Server.Shared.Variables;
+using Server.Shared.Wrappers;
 
 namespace Server.Application.Features.User.Queries;
 

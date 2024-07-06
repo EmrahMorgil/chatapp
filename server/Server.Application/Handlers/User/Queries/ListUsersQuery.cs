@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using MediatR;
-using Server.Application.Consts;
-using Server.Application.Dto;
-using Server.Application.Interfaces;
-using Server.Application.Variables;
-using Server.Application.Wrappers;
+using Server.Shared.Consts;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
+using Server.Shared.Variables;
+using Server.Shared.Wrappers;
+
 
 namespace Server.Application.Features.User.Queries;
 

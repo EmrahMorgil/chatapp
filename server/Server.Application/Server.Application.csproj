@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Server.Domain\Server.Domain.csproj" />
     <ProjectReference Include="..\Server.Hub\Server.Realtime.csproj" />
+    <ProjectReference Include="..\Server.Shared\Server.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

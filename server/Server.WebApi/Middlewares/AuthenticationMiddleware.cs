@@ -1,5 +1,5 @@
-﻿using Server.Application.Variables;
-using Server.Persistence.Services;
+﻿using Server.Shared.Services;
+using Server.Shared.Variables;
 
 namespace Server.WebApi.Middlewares;
 

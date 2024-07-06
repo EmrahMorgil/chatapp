@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Server.Application.Dto;
-using Server.Application.Dtos;
 using Server.Application.Features.Message.Commands;
 using Server.Application.Features.User.Commands;
+using Server.Shared.Dtos;
 
 namespace Server.Application.Mapping;
 
@@ -10,14 +9,16 @@ public class GeneralMapping : Profile
 {
     public GeneralMapping()
     {
+        //Message
         CreateMap<CreateMessageCommand, Domain.Entities.Message>();
 
-        CreateMap<MessageDto, Domain.Entities.Message>();
+        CreateMap<Domain.Entities.Message, MessageDto>();
 
+        //User
         CreateMap<CreateUserCommand, Domain.Entities.User>();
 
-        CreateMap<UserDto, Domain.Entities.User>();
+        CreateMap<Domain.Entities.User, UserDto>();
 
-        CreateMap<UserDetailDto, Domain.Entities.User>();
+        CreateMap<Domain.Entities.User, UserDetailDto>();
     }
 }

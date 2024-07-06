@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Password;
+﻿namespace Server.Shared.Password;
 
 public static class Encryption
 {

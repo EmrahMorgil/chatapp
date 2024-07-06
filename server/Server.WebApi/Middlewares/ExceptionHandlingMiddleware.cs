@@ -1,7 +1,5 @@
-﻿using Server.Application.Consts;
-using Server.Application.Exceptions;
-using Server.Application.Wrappers;
-using System.ComponentModel.DataAnnotations;
+﻿using Server.Application.Exceptions;
+using Server.Shared.Wrappers;
 using System.Text.Json;
 
 namespace Server.WebApi.Middlewares

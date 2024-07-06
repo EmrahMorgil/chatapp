@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Services;
+﻿namespace Server.Shared.Services;
 
 public class ImageUploader
 {

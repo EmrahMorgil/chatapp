@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Server.Application.Variables;
+using Server.Shared.Variables;
 using System.Data;
 
 namespace Server.Persistence.Context;

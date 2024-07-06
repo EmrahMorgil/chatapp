@@ -95,7 +95,7 @@ const Home = () => {
   const fnGetConnection = () => {
     const newConnection = new signalR.HubConnectionBuilder()
       .withUrl(
-        `${process.env.REACT_APP_API_URI}/api/chat-hub?username=${activeUser?.name}&userid=${activeUser?.id}&image=${activeUser?.image}`
+        `${process.env.REACT_APP_API_URI}/api/chat-hub?userid=${activeUser?.id}`
       )
       .withAutomaticReconnect()
       .build();
@@ -103,21 +103,17 @@ const Home = () => {
     setConnection(newConnection);
 
     newConnection.on("ReceiveMessage", (message: mdlMessageDto) => {
-      if (message.senderUser?.id !== activeUser?.id) {
+      if (message.userId !== activeUser?.id) {
         playAudio(enmSoundType.get);
         // getmessage.play();
-        sendNotification(
-          message.senderUser?.name!,
-          message.content!,
-          getUserImage(message.senderUser?.image)
-        );
+        sendNotification(message.userName!,message.content!,getUserImage(message.userImage));
         if (
           sessionStorage.getItem("room") == null ||
           sessionStorage.getItem("room") !== message.room
         ) {
           // unread message için sarı bildirim
           document
-            .getElementById(message.senderUser?.id!)
+            .getElementById(message.userId!)
             ?.classList.remove("d-none");
           // document.getElementById("u" + message.senderId!)?.classList.add("d-none");
         }
@@ -130,19 +126,19 @@ const Home = () => {
 
     newConnection.on("UserConnection", async (onlineUsers: mdlOnlineUsers) => {
       if (onlineUsers.status?.includes("join")) {
-        if (onlineUsers.lastUserId !== activeUser?.id) {
+        if (onlineUsers.user?.id !== activeUser?.id) {
           sendNotification(
-            onlineUsers.userName!,
+            onlineUsers.user?.name!,
             "Joined from server",
-            getUserImage(onlineUsers.image)
+            getUserImage(onlineUsers.user?.image)
           );
           playAudio(enmSoundType.join);
         }
 
         var Rooms: string[] = [];
-        onlineUsers.usersIds?.forEach((u: string) => {
-          if (activeUser && activeUser?.id && u !== activeUser?.id) {
-            let prepareRoomId = [u, activeUser?.id];
+        onlineUsers.onlineUsers?.forEach((u: mdlUserDto) => {
+          if (activeUser && activeUser?.id && u.id !== activeUser?.id) {
+            let prepareRoomId = [u.id!, activeUser?.id!];
             prepareRoomId.sort();
             Rooms.push(prepareRoomId[0] + prepareRoomId[1]);
           }
@@ -152,9 +148,9 @@ const Home = () => {
         });
       } else if (onlineUsers.status?.includes("leave")) {
         sendNotification(
-          onlineUsers.userName!,
+          onlineUsers.user?.name!,
           "Leaved from server",
-          getUserImage(onlineUsers.image)
+          getUserImage(onlineUsers.user?.image)
         );
         playAudio(enmSoundType.leave);
       }
@@ -179,8 +175,8 @@ const Home = () => {
 
     if (response.success && response.body != undefined) {
       response.body?.forEach((user) => {
-        user.status = onlineUsers.usersIds?.some(
-          (onlineUser) => onlineUser === user.id
+        user.status = onlineUsers.onlineUsers?.some(
+          (onlineUser) => onlineUser.id === user.id
         );
       });
       setUsers(response.body);

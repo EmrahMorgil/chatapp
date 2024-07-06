@@ -2,12 +2,12 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Server.Application.Consts;
-using Server.Application.Dto;
-using Server.Application.Interfaces;
-using Server.Application.Variables;
-using Server.Application.Wrappers;
 using Server.Realtime;
+using Server.Shared.Consts;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
+using Server.Shared.Variables;
+using Server.Shared.Wrappers;
 
 namespace Server.Application.Features.Message.Commands;
 
@@ -38,9 +38,12 @@ public class CreateMessageCommand : IRequest<BaseResponse>
             {
                 var message = _mapper.Map<Domain.Entities.Message>(request);
                 message.UserId = Global.UserId;
+                var user = await _userRepository.GetById(Global.UserId);
                 var messageDto = _mapper.Map<MessageDto>(message);
+                messageDto.UserImage = user.Image;
+                messageDto.UserName = user.Name;
                 //SignalR
-                await _hubContext.Clients.Group(message.Room).SendAsync("ReceiveMessage", message.Content);
+                await _hubContext.Clients.Group(message.Room).SendAsync("ReceiveMessage", messageDto);
                 return new BaseResponse(await _messageRepository.Create(message), ResponseMessages.Success);
             }
             else

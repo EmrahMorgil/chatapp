@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Variables;
+﻿namespace Server.Shared.Variables;
 
 public static class Global
 {

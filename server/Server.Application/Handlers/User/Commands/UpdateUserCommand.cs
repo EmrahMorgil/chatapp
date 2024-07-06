@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Server.Application.Consts;
-using Server.Application.Interfaces;
-using Server.Application.Password;
-using Server.Application.Services;
-using Server.Application.Variables;
-using Server.Application.Wrappers;
-using Server.Persistence.Services;
+using Server.Shared.Consts;
+using Server.Shared.Interfaces;
+using Server.Shared.Password;
+using Server.Shared.Services;
+using Server.Shared.Variables;
+using Server.Shared.Wrappers;
 
 namespace Server.Application.Handlers.User.Commands;
 
@@ -24,12 +22,10 @@ public class UpdateUserCommand : IRequest<AuthenticationResponse>
     public class CreateUserCommandHandler : IRequestHandler<UpdateUserCommand, AuthenticationResponse>
     {
         IUserRepository _userRepository;
-        private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+        public CreateUserCommandHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
         }
 
         public async Task<AuthenticationResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

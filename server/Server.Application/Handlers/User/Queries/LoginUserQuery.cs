@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
-using Server.Application.Consts;
-using Server.Application.Interfaces;
-using Server.Application.Password;
-using Server.Application.Wrappers;
-using Server.Persistence.Services;
-
+using Server.Shared.Consts;
+using Server.Shared.Interfaces;
+using Server.Shared.Password;
+using Server.Shared.Services;
+using Server.Shared.Wrappers;
 namespace Server.Application.Features.User.Queries;
 
 public class LoginUserQuery : IRequest<AuthenticationResponse>

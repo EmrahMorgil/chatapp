@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Server.Application;
 using Server.Application.Behaviors;
-using Server.Application.Variables;
 using Server.Domain.Entities;
 using Server.Persistence;
 using Server.Persistence.Extensions;
 using Server.Realtime;
+using Server.Shared.Variables;
 using Server.WebApi.Middlewares;
 using System.Text;
 

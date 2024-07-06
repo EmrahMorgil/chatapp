@@ -1,4 +1,4 @@
-﻿namespace Server.Application.Consts;
+﻿namespace Server.Shared.Consts;
 
 public static class ResponseMessages
 {

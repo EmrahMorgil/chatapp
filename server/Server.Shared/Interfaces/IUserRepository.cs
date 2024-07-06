@@ -1,7 +1,7 @@
-﻿using Server.Application.Dto;
-using Server.Domain.Entities;
+﻿using Server.Domain.Entities;
+using Server.Shared.Dtos;
 
-namespace Server.Application.Interfaces;
+namespace Server.Shared.Interfaces;
 
 public interface IUserRepository : IGenericRepository<User>
 {

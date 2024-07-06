@@ -1,50 +1,53 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Server.Domain.Entities;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
 
 namespace Server.Realtime;
 
-public class OnlineUsers
+public class Notification
 {
-    public List<string> UsersIds { get; set; } = null!;
-    public string UserName { get; set; } = null!;
-    public string LastUserId { get; set; } = null!;
-    public string Image { get; set; } = null!;
+    public List<UserDto> OnlineUsers { get; set; } = null!;
+    public UserDto User { get; set; } = null!;
     public string Status { get; set; } = null!;
 }
 public class ChatHub : Hub
 {
-    static List<string> activeUserIds = new List<string>();
+    static List<UserDto> OnlineUsers = new List<UserDto>();
+    IUserRepository _userRepository;
 
+    public ChatHub(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
+    }
+    
     public override async Task OnConnectedAsync()
     {
-        var onlineUsers = new OnlineUsers();
         var id = Context.GetHttpContext()?.Request.Query["userid"];
-        var userName = Context.GetHttpContext()?.Request.Query["username"];
-        var image = Context.GetHttpContext()?.Request.Query["image"];
+        var user = await _userRepository.GetById(Guid.Parse(id!));
+        var userDto = new UserDto() { Id = user.Id, Name =  user.Name, Image = user.Image };
+        OnlineUsers.Add(userDto);
+        var notification = new Notification();
+        notification.User = userDto;
+        notification.Status = "join";
+        notification.OnlineUsers = OnlineUsers;
 
-        activeUserIds.Add(id);
-        onlineUsers.UserName = userName;
-        onlineUsers.UsersIds = activeUserIds;
-        onlineUsers.Image = image;
-        onlineUsers.LastUserId = id;
-        onlineUsers.Status = "join";
-
-        await Clients.All.SendAsync("UserConnection", onlineUsers);
+        await Clients.All.SendAsync("UserConnection", notification);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var onlineUsers = new OnlineUsers();
         var id = Context.GetHttpContext()?.Request.Query["userid"];
-        var username = Context.GetHttpContext()?.Request.Query["username"];
-        var image = Context.GetHttpContext()?.Request.Query["image"];
+        var user = await _userRepository.GetById(Guid.Parse(id!));
+        var userDto = new UserDto() { Id = user.Id, Name = user.Name, Image = user.Image };
+        var findUser = OnlineUsers.FirstOrDefault(x => x.Id == user.Id);
+        OnlineUsers.Remove(findUser!);
+        var notification = new Notification();
+        notification.User = userDto;
+        notification.Status = "leave";
+        notification.OnlineUsers = OnlineUsers;
 
-        activeUserIds.Remove(id);
-        onlineUsers.UserName = username;
-        onlineUsers.UsersIds = activeUserIds;
-        onlineUsers.Image = image;
-        onlineUsers.Status = "leave";
-
-        await Clients.Others.SendAsync("UserConnection", onlineUsers);
+        await Clients.Others.SendAsync("UserConnection", notification);
     }
     public async Task JoinRoom(string roomName)
     {

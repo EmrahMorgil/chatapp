@@ -1,10 +1,8 @@
 ﻿using Dapper;
-using Server.Application.Dto;
-using Server.Application.Interfaces;
 using Server.Domain.Entities;
 using Server.Persistence.Context;
-using System.Reflection.PortableExecutable;
-using System.Security.Cryptography;
+using Server.Shared.Dtos;
+using Server.Shared.Interfaces;
 
 namespace Server.Persistence.Repositories;
 
@@ -19,9 +17,9 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<User> GetByEmail(string pEmail)
     {
-        var query = @"select * from users where email = @email";
+        var query = @"select * from users where email = @pEmail";
         var parameters = new DynamicParameters();
-        parameters.Add("Email", pEmail);
+        parameters.Add("pEmail", pEmail);
 
         using (var connection = _dbContext.CreateConnection())
         {
@@ -33,7 +31,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         var query = @"select Id,Name,Image from users where Id <> @pId";
         var parameters = new DynamicParameters();
-        parameters.Add("Id", pId);
+        parameters.Add("pId", pId);
 
         using (var connection = _dbContext.CreateConnection())
         {
