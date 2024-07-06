@@ -3,6 +3,7 @@ using Server.Application.Interfaces;
 using Server.Persistence.Context;
 using Server.Persistence.Helpers;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace Server.Persistence.Repositories;
 
@@ -15,7 +16,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dbContext = dbContext;
     }
 
-    public async Task<bool> Create(T entity)
+    public async Task<bool> Create(T pEntity)
     {
         var tableName = RepositoryHelper.GetTableName<T>();
         var properties = RepositoryHelper.GetPropertyNames<T>().ToList();
@@ -24,18 +25,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
         using (var connection = _dbContext.CreateConnection())
         {
-            return await connection.ExecuteAsync(query, entity) > 0;
+            return await connection.ExecuteAsync(query, pEntity) > 0;
         }
     }
 
-    public async Task<T> GetById(Guid id)
+    public async Task<T> GetById(Guid pId)
     {
         var tableName = RepositoryHelper.GetTableName<T>();
         var query = $"select * from {tableName} where Id = @Id";
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", pId);
 
         using (var connection = _dbContext.CreateConnection())
         {
-            var entity = await connection.QueryFirstOrDefaultAsync<T>(query, new { Id = id });
+            var entity = await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
             if (entity == null)
             {
                 throw new Exception();

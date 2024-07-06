@@ -8,7 +8,7 @@ public class AddProductsTable : Migration
         Create.Table("Messages")
             .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("CreatedDate").AsDateTime().NotNullable()
-            .WithColumn("SenderId").AsGuid().NotNullable()
+            .WithColumn("UserId").AsGuid().NotNullable()
             .WithColumn("Content").AsString(int.MaxValue).NotNullable()
             .WithColumn("Room").AsString(500).NotNullable();
         Create.Table("Users")

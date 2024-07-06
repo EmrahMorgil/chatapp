@@ -36,10 +36,8 @@ public class UpdateUserCommand : IRequest<AuthenticationResponse>
         {
             var imageName = ImageUploader.UploadImage(request.Image);
             var user = await _userRepository.GetById(Global.UserId);
-            var userList = await _userRepository.List();
-            var filteredUsers = userList.Where(u => u.Id != user.Id).ToList();
             var oldPasswordControl = Encryption.VerifyPassword(request.OldPassword, user.Password);
-            var existUser = filteredUsers.FirstOrDefault((u) => u.Email == request.Email);
+            var existUser = _userRepository.GetByEmail(request.Email);
 
             if (existUser == null)
             {

@@ -2,12 +2,14 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Server.Application.Consts;
 using Server.Application.Dto;
 using Server.Application.Interfaces;
 using Server.Application.Variables;
 using Server.Application.Wrappers;
 using Server.Persistence.Services;
+using Server.Realtime;
 
 namespace Server.Application.Features.Message.Queries;
 
@@ -20,35 +22,22 @@ public class MessagesFilterQuery : IRequest<BaseDataResponse<List<MessageDto>>>
         IMessageRepository _messageRepository;
         IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public MessagesFilterQueryHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper)
+        private readonly IHubContext<ChatHub> _hubContext;
+
+        public MessagesFilterQueryHandler(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper, IHubContext<ChatHub> hubContext)
         {
             _userRepository = userRepository;
             _messageRepository = messageRepository;
             _mapper = mapper;
+            _hubContext = hubContext;
         }
 
         public async Task<BaseDataResponse<List<MessageDto>>> Handle(MessagesFilterQuery request, CancellationToken cancellationToken)
         {
             if(request.Room.Contains(Global.UserId.ToString()))
             {
-                var users = await _userRepository.List();
-                var messages = await _messageRepository.List();
-                var filteredMessages = messages
-                .Where(m => m.Room == request.Room)
-                .Join(users,
-                    message => message.SenderId,
-                    user => user.Id,
-                    (message, user) => new MessageDto
-                    {
-                        Id = message.Id,
-                        CreatedDate = message.CreatedDate,
-                        SenderUser = _mapper.Map<UserDto>(user),
-                        Content = message.Content,
-                        Room = message.Room
-                    })
-                .ToList();
-
-                return new BaseDataResponse<List<MessageDto>>(filteredMessages, true, ResponseMessages.Success);
+                var messages = await _messageRepository.GetFilteredMessages(request.Room);
+                return new BaseDataResponse<List<MessageDto>>(messages, true, ResponseMessages.Success);
             }
             else
             {

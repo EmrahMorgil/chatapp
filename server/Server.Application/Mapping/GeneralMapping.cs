@@ -10,19 +10,14 @@ public class GeneralMapping : Profile
 {
     public GeneralMapping()
     {
-        CreateMap<Domain.Entities.Message, CreateMessageCommand>()
-            .ReverseMap();
+        CreateMap<CreateMessageCommand, Domain.Entities.Message>();
 
-        CreateMap<Domain.Entities.Message, MessageDto>()
-            .ReverseMap();
+        CreateMap<MessageDto, Domain.Entities.Message>();
 
-        CreateMap<Domain.Entities.User, CreateUserCommand>()
-           .ReverseMap();
+        CreateMap<CreateUserCommand, Domain.Entities.User>();
 
-        CreateMap<Domain.Entities.User, UserDto>()
-           .ReverseMap();
+        CreateMap<UserDto, Domain.Entities.User>();
 
-        CreateMap<Domain.Entities.User, UserDetailDto>()
-           .ReverseMap();
+        CreateMap<UserDetailDto, Domain.Entities.User>();
     }
 }

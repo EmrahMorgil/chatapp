@@ -7,7 +7,7 @@ using Server.Application.Variables;
 using Server.Domain.Entities;
 using Server.Persistence;
 using Server.Persistence.Extensions;
-using Server.WebApi.Hubs;
+using Server.Realtime;
 using Server.WebApi.Middlewares;
 using System.Text;
 

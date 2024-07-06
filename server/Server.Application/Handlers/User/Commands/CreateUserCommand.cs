@@ -33,8 +33,7 @@ public class CreateUserCommand : IRequest<AuthenticationResponse>
             var imageName = ImageUploader.UploadImage(request.Image);
             if (imageName != null)
             {
-                var userList = await _userRepository.List();
-                var existUser = userList.FirstOrDefault((u) => u.Email == request.Email);
+                var existUser = _userRepository.GetByEmail(request.Email);
                 if (existUser == null)
                 {
                     var user = _mapper.Map<Domain.Entities.User>(request);

@@ -24,11 +24,8 @@ public class ListUsersQuery : IRequest<BaseDataResponse<List<UserDto>>>
 
         public async Task<BaseDataResponse<List<UserDto>>> Handle(ListUsersQuery request, CancellationToken cancellationToken)
         {
-
-            var userList = await _userRepository.List();
-            var filteredUserList = userList.Where((u) => u.Id != Global.UserId);
-            var mapperUserList = filteredUserList.Select(u => _mapper.Map<UserDto>(u)).ToList();
-            return new BaseDataResponse<List<UserDto>>(mapperUserList, true, ResponseMessages.Success);
+            var filteredUserList = await _userRepository.ListUsersExcludingId(Global.UserId);
+            return new BaseDataResponse<List<UserDto>>(filteredUserList, true, ResponseMessages.Success);
         }
     }
 }

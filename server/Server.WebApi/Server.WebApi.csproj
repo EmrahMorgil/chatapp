@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Server.Application\Server.Application.csproj" />
+    <ProjectReference Include="..\Server.Hub\Server.Realtime.csproj" />
     <ProjectReference Include="..\Server.Persistence\Server.Persistence.csproj" />
   </ItemGroup>
 
